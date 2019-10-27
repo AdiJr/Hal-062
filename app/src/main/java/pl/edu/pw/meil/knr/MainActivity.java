@@ -10,26 +10,25 @@ import android.widget.Toast;
 
 public class MainActivity extends AppCompatActivity {
 
-    private ImageButton connectBtn;
     private TextView connectionState;
+    private ImageButton connectBtn;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
 
-        connectBtn =  findViewById(R.id.connectBtn);
+        connectBtn = findViewById(R.id.connectBtn);
         connectionState = findViewById(R.id.connectionStateTextView);
 
-        connectionState.setText("The Hal Rover is currently DISCONNECTED");
-        connectionState.setTextColor(getResources().getColor(R.color.colorPrimary));
+        connectionState.setText(getString(R.string.rover_disconnected));
+        connectionState.setTextColor(getResources().getColor(R.color.colorAccent));
+    }
 
-        connectBtn.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                connectionState.setText("The Hal Rover is currently CONNECTED");
-                connectionState.setTextColor(Color.parseColor("#00ff0"));
-            }
-        });
+    public void connect(View v) {
+        connectBtn.setBackgroundResource(R.drawable.button_pressed);
+        Toast toast = Toast.makeText(this, "kkkk", Toast.LENGTH_SHORT);
+        toast.show();
+
     }
 }

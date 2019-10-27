@@ -4,4 +4,6 @@
     <string name="mainName">Łazik KNR Hal-062</string>
     <string name="btnDcs">Click to connect</string>
     <string name="connState">Connection State:</string>
+    <string name="rover_disconnected">The Hal Rover is currently DISCONNECTED</string>
+    <string name="rover_connected">The Hal Rover is currently CONNECTED</string>
 </resources>
