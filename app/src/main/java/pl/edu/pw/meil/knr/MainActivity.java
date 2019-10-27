@@ -11,7 +11,9 @@ import android.widget.Toast;
 public class MainActivity extends AppCompatActivity {
 
     private TextView connectionState;
+    private TextView clickToConnect;
     private ImageButton connectBtn;
+    private boolean isClicked = true;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -20,15 +22,25 @@ public class MainActivity extends AppCompatActivity {
 
         connectBtn = findViewById(R.id.connectBtn);
         connectionState = findViewById(R.id.connectionStateTextView);
+        clickToConnect = findViewById(R.id.clickToConnectTxt);
 
         connectionState.setText(getString(R.string.rover_disconnected));
         connectionState.setTextColor(getResources().getColor(R.color.colorAccent));
     }
 
     public void connect(View v) {
-        connectBtn.setBackgroundResource(R.drawable.button_pressed);
-        Toast toast = Toast.makeText(this, "kkkk", Toast.LENGTH_SHORT);
-        toast.show();
-
+        if (isClicked) {
+            connectBtn.setBackgroundResource(R.drawable.button_pressed);
+            connectionState.setText(getString(R.string.rover_connected));
+            connectionState.setTextColor(getResources().getColor(R.color.green));
+            clickToConnect.setText(getString(R.string.disconnect));
+            isClicked = false;
+        } else {
+            connectBtn.setBackgroundResource(R.drawable.button_normal);
+            connectionState.setText(getString(R.string.rover_disconnected));
+            connectionState.setTextColor(getResources().getColor(R.color.colorAccent));
+            clickToConnect.setText(R.string.btnDcs);
+            isClicked = true;
+        }
     }
 }

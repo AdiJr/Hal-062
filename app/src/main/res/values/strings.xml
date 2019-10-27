@@ -6,4 +6,5 @@
     <string name="connState">Connection State:</string>
     <string name="rover_disconnected">The Hal Rover is currently DISCONNECTED</string>
     <string name="rover_connected">The Hal Rover is currently CONNECTED</string>
+    <string name="disconnect">Click to disconnect</string>
 </resources>

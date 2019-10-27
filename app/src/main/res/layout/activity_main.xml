@@ -16,6 +16,7 @@
         android:textSize="25sp" />
 
     <TextView
+        android:id="@+id/clickToConnectTxt"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_centerHorizontal="true"
