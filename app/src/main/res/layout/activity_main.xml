@@ -5,22 +5,21 @@
     android:layout_height="match_parent"
     tools:context=".MainActivity">
 
-    <TextView
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_centerHorizontal="true"
-        android:layout_marginTop="20dp"
-        android:fontFamily="@font/roboto"
-        android:text="@string/mainName"
-        android:textColor="@color/colorPrimary"
-        android:textSize="20sp" />
-
     <ImageView
         android:layout_width="350dp"
         android:layout_height="wrap_content"
         android:layout_centerHorizontal="true"
-        android:layout_marginTop="-180dp"
+        android:layout_marginTop="-120dp"
         android:contentDescription="@string/knr_logo"
+        android:src="@drawable/knr_rover_logo" />
+
+    <ImageView
+        android:layout_width="270dp"
+        android:layout_height="wrap_content"
+        android:layout_centerHorizontal="true"
+        android:layout_marginTop="-150dp"
+        android:adjustViewBounds="false"
+        android:contentDescription="@string/rover_team_logo"
         android:src="@drawable/knr_logo" />
 
     <TextView
@@ -28,18 +27,17 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_centerHorizontal="true"
-        android:layout_marginTop="500dp"
+        android:layout_marginTop="610dp"
         android:text="@string/btnDcs"
         android:textColor="@color/colorAccent"
         android:textSize="20sp" />
 
     <ImageButton
         android:id="@+id/connectBtn"
-        android:layout_width="250dp"
-        android:layout_height="250dp"
-        android:layout_centerInParent="true"
+        android:layout_width="330dp"
+        android:layout_height="330dp"
         android:layout_centerHorizontal="true"
-        android:layout_centerVertical="true"
+        android:layout_marginTop="260dp"
         android:background="@drawable/button_normal"
         android:contentDescription="@string/connectBtnDsc"
         android:onClick="connect"
@@ -50,16 +48,9 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_centerHorizontal="true"
-        android:layout_marginTop="550dp"
+        android:layout_marginTop="640dp"
         android:textColor="@color/colorAccent"
         android:textSize="20sp" />
 
-    <ImageView
-        android:layout_width="350dp"
-        android:layout_height="wrap_content"
-        android:layout_centerHorizontal="true"
-        android:layout_marginTop="600dp"
-        android:contentDescription="@string/rover_team_logo"
-        android:src="@drawable/knr_rover_logo" />
 
 </RelativeLayout>

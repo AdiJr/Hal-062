@@ -1,12 +1,10 @@
 package pl.edu.pw.meil.knr;
 
-import android.graphics.Color;
 import android.os.Bundle;
 import android.support.v7.app.AppCompatActivity;
 import android.view.View;
 import android.widget.ImageButton;
 import android.widget.TextView;
-import android.widget.Toast;
 
 public class MainActivity extends AppCompatActivity {
 
@@ -31,12 +29,14 @@ public class MainActivity extends AppCompatActivity {
     public void connect(View v) {
         if (isClicked) {
             connectBtn.setBackgroundResource(R.drawable.button_pressed);
+            connectBtn.setImageResource(R.drawable.rover);
             connectionState.setText(getString(R.string.rover_connected));
             connectionState.setTextColor(getResources().getColor(R.color.green));
             clickToConnect.setText(getString(R.string.disconnect));
             isClicked = false;
         } else {
             connectBtn.setBackgroundResource(R.drawable.button_normal);
+            connectBtn.setImageResource(R.drawable.bluetooth);
             connectionState.setText(getString(R.string.rover_disconnected));
             connectionState.setTextColor(getResources().getColor(R.color.colorAccent));
             clickToConnect.setText(R.string.btnDcs);
