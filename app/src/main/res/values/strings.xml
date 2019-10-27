@@ -7,4 +7,6 @@
     <string name="rover_disconnected">The Hal Rover is currently DISCONNECTED</string>
     <string name="rover_connected">The Hal Rover is currently CONNECTED</string>
     <string name="disconnect">Click to disconnect</string>
+    <string name="knr_logo">KNR_logo</string>
+    <string name="rover_team_logo">rover_team_logo</string>
 </resources>

@@ -6,21 +6,29 @@
     tools:context=".MainActivity">
 
     <TextView
-        android:id="@+id/name"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_centerHorizontal="true"
-        android:layout_marginTop="50dp"
+        android:layout_marginTop="20dp"
+        android:fontFamily="@font/roboto"
         android:text="@string/mainName"
         android:textColor="@color/colorPrimary"
-        android:textSize="25sp" />
+        android:textSize="20sp" />
+
+    <ImageView
+        android:layout_width="350dp"
+        android:layout_height="wrap_content"
+        android:layout_centerHorizontal="true"
+        android:layout_marginTop="-180dp"
+        android:contentDescription="@string/knr_logo"
+        android:src="@drawable/KNR_BIG_BLACK" />
 
     <TextView
         android:id="@+id/clickToConnectTxt"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_centerHorizontal="true"
-        android:layout_marginTop="120dp"
+        android:layout_marginTop="500dp"
         android:text="@string/btnDcs"
         android:textColor="@color/colorAccent"
         android:textSize="20sp" />
@@ -30,9 +38,10 @@
         android:layout_width="250dp"
         android:layout_height="250dp"
         android:layout_centerInParent="true"
+        android:layout_centerHorizontal="true"
+        android:layout_centerVertical="true"
         android:background="@drawable/button_normal"
         android:contentDescription="@string/connectBtnDsc"
-        android:padding="10dp"
         android:onClick="connect"
         android:src="@drawable/bluetooth" />
 
@@ -44,5 +53,13 @@
         android:layout_marginTop="550dp"
         android:textColor="@color/colorAccent"
         android:textSize="20sp" />
+
+    <ImageView
+        android:layout_width="350dp"
+        android:layout_height="wrap_content"
+        android:layout_centerHorizontal="true"
+        android:layout_marginTop="600dp"
+        android:contentDescription="@string/rover_team_logo"
+        android:src="@drawable/KNR_ROVER_BLACK" />
 
 </RelativeLayout>
