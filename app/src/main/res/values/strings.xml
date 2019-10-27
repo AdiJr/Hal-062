@@ -9,4 +9,5 @@
     <string name="disconnect">Click to disconnect</string>
     <string name="knr_logo">KNR_logo</string>
     <string name="rover_team_logo">rover_team_logo</string>
+    <string name="no_bluetooth">Your device does not support bluetooth</string>
 </resources>
