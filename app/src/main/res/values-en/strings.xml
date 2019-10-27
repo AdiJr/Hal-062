@@ -1,0 +1,7 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string name="mainName">Hal-062 Mars Rover</string>
+    <string name="connectBtnDsc">Connect</string>
+    <string name="btnDcs">Click to connect</string>
+    <string name="connState">Connection State:</string>
+</resources>

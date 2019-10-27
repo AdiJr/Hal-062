@@ -1,0 +1,7 @@
+<resources>
+    <string name="app_name" translatable="false">Hal-062</string>
+    <string name="connectBtnDsc">Connect</string>
+    <string name="mainName">Łazik KNR Hal-062</string>
+    <string name="btnDcs">Click to connect</string>
+    <string name="connState">Connection State:</string>
+</resources>

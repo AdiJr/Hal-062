@@ -1,0 +1,7 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string name="mainName">Łazik KNR Hal-062</string>
+    <string name="connectBtnDsc">Połącz</string>
+    <string name="btnDcs">KLiknij, aby połączyć</string>
+    <string name="connState">Stan połączenia:</string>
+</resources>
