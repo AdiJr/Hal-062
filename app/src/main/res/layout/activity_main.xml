@@ -3,6 +3,7 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
+    android:orientation="vertical"
     tools:context=".MainActivity">
 
     <ImageView
@@ -22,20 +23,10 @@
         android:contentDescription="@string/rover_team_logo"
         android:src="@drawable/knr_logo" />
 
-    <TextView
-        android:id="@+id/clickToConnectTxt"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_centerHorizontal="true"
-        android:layout_marginTop="610dp"
-        android:text="@string/btnDcs"
-        android:textColor="@color/colorAccent"
-        android:textSize="20sp" />
-
     <ImageButton
         android:id="@+id/connectBtn"
-        android:layout_width="330dp"
-        android:layout_height="330dp"
+        android:layout_width="250dp"
+        android:layout_height="250dp"
         android:layout_centerHorizontal="true"
         android:layout_marginTop="260dp"
         android:background="@drawable/button_normal"
@@ -43,14 +34,75 @@
         android:onClick="connect"
         android:src="@drawable/bluetooth" />
 
+    <ImageView
+        android:id="@+id/roverImg"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_centerHorizontal="true"
+        android:layout_marginTop="270dp"
+        android:contentDescription="@string/roverimage"
+        android:src="@drawable/rover" />
+
+    <Button
+        android:id="@+id/disconnectBtn"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_centerHorizontal="true"
+        android:layout_marginTop="560dp"
+        android:background="@drawable/rounded_button"
+        android:onClick="disconnect"
+        android:padding="12dp"
+        android:text="@string/disconnectBrn"
+        android:textColor="@android:color/white" />
+
+    <TextView
+        android:id="@+id/clickToConnectTxt"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_centerHorizontal="true"
+        android:layout_marginTop="580dp"
+        android:text="@string/btnDcs"
+        android:textColor="@color/colorAccent"
+        android:textSize="20sp" />
+
     <TextView
         android:id="@+id/connectionStateTextView"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_centerHorizontal="true"
-        android:layout_marginTop="640dp"
+        android:layout_marginTop="520dp"
         android:textColor="@color/colorAccent"
         android:textSize="20sp" />
 
+
+    <LinearLayout
+        android:layout_width="fill_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="30dp"
+        android:layout_marginTop="620dp"
+        android:orientation="horizontal">
+
+        <Button
+            android:id="@+id/moveBtn"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="10dp"
+            android:background="@drawable/rounded_button"
+            android:padding="15dp"
+            android:text="@string/movement_control"
+            android:textColor="@android:color/white" />
+
+        <Button
+            android:id="@+id/armBtn"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="20dp"
+            android:background="@drawable/rounded_button"
+            android:padding="15dp"
+            android:text="@string/arm_control"
+            android:textColor="@android:color/white" />
+
+
+    </LinearLayout>
 
 </RelativeLayout>

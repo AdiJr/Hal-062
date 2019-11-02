@@ -10,4 +10,9 @@
     <string name="knr_logo">KNR_logo</string>
     <string name="rover_team_logo">rover_team_logo</string>
     <string name="no_bluetooth">Your device does not support bluetooth</string>
+    <string name="movement_control">Movement Control</string>
+    <string name="arm_control">Arm Control</string>
+    <string name="roverimage">RoverImage</string>
+    <string name="disconnectBrn">Disconnect</string>
+    <string name="connect">Click to connect</string>
 </resources>

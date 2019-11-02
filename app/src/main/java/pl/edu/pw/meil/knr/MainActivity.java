@@ -9,19 +9,22 @@ import android.content.IntentFilter;
 import android.os.Bundle;
 import android.support.v7.app.AppCompatActivity;
 import android.view.View;
+import android.widget.Button;
 import android.widget.ImageButton;
+import android.widget.ImageView;
 import android.widget.TextView;
 import android.widget.Toast;
-
-import java.util.Set;
 
 public class MainActivity extends AppCompatActivity {
 
     private TextView connectionState;
     private TextView clickToConnect;
     private ImageButton connectBtn;
-    private boolean isClicked = true;
-    BluetoothAdapter bluetoothAdapter = BluetoothAdapter.getDefaultAdapter();
+    private BluetoothAdapter bluetoothAdapter = BluetoothAdapter.getDefaultAdapter();
+    private Button movementBtn;
+    private Button armBtn;
+    private Button disconnectBtn;
+    private ImageView roverImg;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -31,9 +34,31 @@ public class MainActivity extends AppCompatActivity {
         connectBtn = findViewById(R.id.connectBtn);
         connectionState = findViewById(R.id.connectionStateTextView);
         clickToConnect = findViewById(R.id.clickToConnectTxt);
+        movementBtn = findViewById(R.id.moveBtn);
+        armBtn = findViewById(R.id.armBtn);
+        roverImg = findViewById(R.id.roverImg);
+        disconnectBtn = findViewById(R.id.disconnectBtn);
+
+        movementBtn.setVisibility(View.INVISIBLE);
+        armBtn.setVisibility(View.INVISIBLE);
+        roverImg.setVisibility(View.INVISIBLE);
+        disconnectBtn.setVisibility(View.INVISIBLE);
 
         connectionState.setText(getString(R.string.rover_disconnected));
         connectionState.setTextColor(getResources().getColor(R.color.colorAccent));
+
+        if (bluetoothAdapter.isEnabled()) {
+            connectionState.setText(getString(R.string.rover_connected));
+            connectionState.setTextColor(getResources().getColor(R.color.green));
+            connectionState.setTextSize(22);
+            clickToConnect.setText(getString(R.string.disconnect));
+            armBtn.setVisibility(View.VISIBLE);
+            movementBtn.setVisibility(View.VISIBLE);
+            connectBtn.setVisibility(View.INVISIBLE);
+            roverImg.setVisibility(View.VISIBLE);
+            disconnectBtn.setVisibility(View.VISIBLE);
+            clickToConnect.setVisibility(View.INVISIBLE);
+        }
     }
 
 
@@ -51,57 +76,52 @@ public class MainActivity extends AppCompatActivity {
 
     public void connect(View v) {
 
-        if (isClicked) {
-
-            if (bluetoothAdapter == null) {
-                Toast toast = Toast.makeText(this, getString(R.string.no_bluetooth), Toast.LENGTH_SHORT);
-                toast.show();
-            } else {
-                if (!bluetoothAdapter.isEnabled()) {
-                    Intent enableBluetooth = new Intent(BluetoothAdapter.ACTION_REQUEST_ENABLE);
-                    startActivity(enableBluetooth);
-
-                    IntentFilter BTIntent = new IntentFilter(BluetoothAdapter.ACTION_STATE_CHANGED);
-                    registerReceiver(receiver, BTIntent);
-                }
-            }
-
-            Set<BluetoothDevice> pairedDevices = bluetoothAdapter.getBondedDevices();
-
-            if (pairedDevices.size() > 0) {
-                for (BluetoothDevice device : pairedDevices) {
-                    String deviceName = device.getName();
-                    String deviceHardwareAddress = device.getAddress();
-                }
-            }
-            bluetoothAdapter.startDiscovery();
-
-            IntentFilter filter = new IntentFilter(BluetoothDevice.ACTION_FOUND);
-            registerReceiver(receiver, filter);
-
-
-            connectBtn.setBackgroundResource(R.drawable.button_pressed);
-            connectBtn.setImageResource(R.drawable.rover);
-            connectionState.setText(getString(R.string.rover_connected));
-            connectionState.setTextColor(getResources().getColor(R.color.green));
-            clickToConnect.setText(getString(R.string.disconnect));
-
-            isClicked = false;
+        if (bluetoothAdapter == null) {
+            Toast toast = Toast.makeText(this, getString(R.string.no_bluetooth), Toast.LENGTH_SHORT);
+            toast.show();
         } else {
-            if (bluetoothAdapter.isEnabled()) {
-                bluetoothAdapter.disable();
+            if (!bluetoothAdapter.isEnabled()) {
+                Intent enableBluetooth = new Intent(BluetoothAdapter.ACTION_REQUEST_ENABLE);
+                startActivity(enableBluetooth);
 
                 IntentFilter BTIntent = new IntentFilter(BluetoothAdapter.ACTION_STATE_CHANGED);
                 registerReceiver(receiver, BTIntent);
             }
+        }
 
+        if (bluetoothAdapter.isEnabled()) {
+            connectionState.setText(getString(R.string.rover_connected));
+            connectionState.setTextColor(getResources().getColor(R.color.green));
+            connectionState.setTextSize(22);
+            clickToConnect.setText(getString(R.string.disconnect));
+            armBtn.setVisibility(View.VISIBLE);
+            movementBtn.setVisibility(View.VISIBLE);
+            connectBtn.setVisibility(View.INVISIBLE);
+            roverImg.setVisibility(View.VISIBLE);
+            disconnectBtn.setVisibility(View.VISIBLE);
+            clickToConnect.setVisibility(View.INVISIBLE);
+        }
+    }
+
+    public void disconnect(View view) {
+        bluetoothAdapter.disable();
+
+        IntentFilter BTIntent = new IntentFilter(BluetoothAdapter.ACTION_STATE_CHANGED);
+        registerReceiver(receiver, BTIntent);
+
+        if (!bluetoothAdapter.isEnabled()) {
+            armBtn.setVisibility(View.INVISIBLE);
+            movementBtn.setVisibility(View.INVISIBLE);
+            connectBtn.setVisibility(View.VISIBLE);
+            roverImg.setVisibility(View.INVISIBLE);
             connectBtn.setBackgroundResource(R.drawable.button_normal);
             connectBtn.setImageResource(R.drawable.bluetooth);
-            connectionState.setText(getString(R.string.rover_disconnected));
             connectionState.setTextColor(getResources().getColor(R.color.colorAccent));
-            clickToConnect.setText(R.string.btnDcs);
-
-            isClicked = true;
+            clickToConnect.setVisibility(View.INVISIBLE);
+            disconnectBtn.setVisibility(View.INVISIBLE);
+            connectionState.setText(getString(R.string.rover_disconnected));
+            clickToConnect.setVisibility(View.VISIBLE);
+            clickToConnect.setText(getString(R.string.connect));
         }
     }
 }
