@@ -74,35 +74,28 @@
         android:textColor="@color/colorAccent"
         android:textSize="20sp" />
 
-
-    <LinearLayout
-        android:layout_width="fill_parent"
+    <Button
+        android:id="@+id/moveBtn"
+        android:layout_width="160dp"
         android:layout_height="wrap_content"
-        android:layout_marginStart="30dp"
-        android:layout_marginTop="620dp"
-        android:orientation="horizontal">
+        android:layout_alignParentStart="true"
+        android:layout_alignParentBottom="true"
+        android:layout_margin="15dp"
+        android:background="@drawable/rounded_button"
+        android:onClick="roverMovement"
+        android:text="@string/movement_control"
+        android:textColor="@android:color/white" />
 
-        <Button
-            android:id="@+id/moveBtn"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_marginStart="10dp"
-            android:background="@drawable/rounded_button"
-            android:padding="15dp"
-            android:text="@string/movement_control"
-            android:textColor="@android:color/white" />
+    <Button
+        android:id="@+id/armBtn"
+        android:layout_width="160dp"
+        android:layout_height="wrap_content"
+        android:layout_alignParentEnd="true"
+        android:layout_alignParentBottom="true"
+        android:layout_margin="15dp"
+        android:background="@drawable/rounded_button"
+        android:text="@string/arm_control"
+        android:textColor="@android:color/white" />
 
-        <Button
-            android:id="@+id/armBtn"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_marginStart="20dp"
-            android:background="@drawable/rounded_button"
-            android:padding="15dp"
-            android:text="@string/arm_control"
-            android:textColor="@android:color/white" />
-
-
-    </LinearLayout>
 
 </RelativeLayout>

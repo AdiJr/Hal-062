@@ -15,4 +15,5 @@
     <string name="roverimage">RoverImage</string>
     <string name="disconnectBrn">Disconnect</string>
     <string name="connect">Click to connect</string>
+    <string name="control_title">Rover Movement Control</string>
 </resources>

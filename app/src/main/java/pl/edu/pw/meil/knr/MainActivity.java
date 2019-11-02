@@ -124,4 +124,9 @@ public class MainActivity extends AppCompatActivity {
             clickToConnect.setText(getString(R.string.connect));
         }
     }
+
+    public void roverMovement(View view) {
+        Intent intent = new Intent(this, MovementActivity.class);
+        startActivity(intent);
+    }
 }
