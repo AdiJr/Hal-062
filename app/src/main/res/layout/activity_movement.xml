@@ -7,11 +7,11 @@
 
     <ImageView
         android:id="@+id/knr_logo"
-        android:layout_marginTop="-260dp"
-        android:layout_marginLeft="40dp"
-        android:layout_marginRight="40dp"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
+        android:layout_marginLeft="40dp"
+        android:layout_marginTop="-260dp"
+        android:layout_marginRight="40dp"
         android:src="@drawable/knr_logo" />
 
     <pl.edu.pw.meil.knr.JoystickView xmlns:custom="http://schemas.android.com/apk/res-auto"
@@ -28,31 +28,17 @@
         custom:JV_buttonSizeRatio="12%"
         custom:JV_fixedCenter="true" />
 
-    <Button
-        android:id="@+id/engineOn"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_alignParentStart="true"
-        android:layout_alignParentTop="true"
-        android:layout_marginStart="40dp"
-        android:layout_marginTop="490dp"
-        android:background="@drawable/rounded_button"
-        android:padding="15dp"
-        android:text="Engine ON"
-        android:textColor="@android:color/white" />
 
-    <Button
-        android:id="@+id/engineOff"
+    <Switch
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_alignParentTop="true"
-        android:layout_alignParentEnd="true"
-        android:layout_marginTop="490dp"
-        android:layout_marginEnd="40dp"
-        android:background="@drawable/rounded_button"
-        android:padding="15dp"
-        android:text="Engine OFF"
-        android:textColor="@android:color/white" />
+        android:layout_centerHorizontal="true"
+        android:layout_marginTop="500dp"
+        android:text="ENGINE "
+        android:textStyle="bold"
+        android:textColor="@color/colorAccent"
+        android:textSize="25sp" />
+
 
     <Button
         android:id="@+id/switchToArm"
