@@ -31,8 +31,14 @@
         android:layout_marginTop="260dp"
         android:background="@drawable/button_normal"
         android:contentDescription="@string/connectBtnDsc"
-        android:onClick="connect"
+        android:onClick="startConnection"
         android:src="@drawable/bluetooth" />
+
+    <ListView
+        android:id="@+id/lvNewDevices"
+        android:layout_width="match_parent"
+        android:layout_height="280dp"
+        android:layout_marginTop="15dp" />
 
     <ImageView
         android:id="@+id/roverImg"
