@@ -2,40 +2,43 @@ package pl.edu.pw.meil.knr;
 
 import android.app.Activity;
 import android.os.Bundle;
-import android.widget.CompoundButton;
-import android.widget.Switch;
+import android.view.View;
+import android.widget.Button;
 
 import java.util.Timer;
 import java.util.TimerTask;
 
 public class MovementActivity extends Activity {
 
-    private Switch engineSwitch;
+    private Button engineBtnOn;
+    private Button engineBtnOff;
     private FrameHandling mFrameHandling;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_movement);
-        setTitle(R.string.control_title);
 
         mFrameHandling = new FrameHandling();
         final Timer t = new Timer();
 
-        engineSwitch = findViewById(R.id.engineSwitch);
-        engineSwitch.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
+        engineBtnOn = findViewById(R.id.engineBtnOn);
+        engineBtnOff = findViewById(R.id.engineBtnOFF);
+        engineBtnOn.setOnClickListener(new View.OnClickListener() {
             @Override
-            public void onCheckedChanged(CompoundButton buttonView, boolean isChecked) {
-                if (isChecked) {
-                    if (mFrameHandling != null) {
-                        int[] charTab = {1, 1, 1, 40};
-                        mFrameHandling.sendFrameInt(21, 4, charTab);
-                    }
-                } else {
-                    if (mFrameHandling != null) {
-                        int[] charTab = {0, 0, 0, 40};
-                        mFrameHandling.sendFrameInt(21, 4, charTab);
-                    }
+            public void onClick(View v) {
+                if (mFrameHandling != null) {
+                    int[] charTab = {1, 1, 1, 40};
+                    mFrameHandling.sendFrameInt(21, 4, charTab);
+                }
+            }
+        });
+        engineBtnOff.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                if (mFrameHandling != null) {
+                    int[] charTab = {0, 0, 0, 40};
+                    mFrameHandling.sendFrameInt(21, 4, charTab);
                 }
             }
         });

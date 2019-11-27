@@ -5,10 +5,10 @@ import android.bluetooth.BluetoothAdapter;
 import android.bluetooth.BluetoothDevice;
 import android.content.BroadcastReceiver;
 import android.content.Context;
+import android.content.DialogInterface;
 import android.content.Intent;
 import android.content.IntentFilter;
 import android.os.Bundle;
-import android.support.v7.app.AppCompatActivity;
 import android.util.Log;
 import android.view.View;
 import android.widget.AdapterView;
@@ -19,8 +19,14 @@ import android.widget.ListView;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import com.google.android.material.snackbar.BaseTransientBottomBar;
+import com.google.android.material.snackbar.Snackbar;
+
 import java.util.ArrayList;
-import java.util.UUID;
+import java.util.Set;
+
+import androidx.appcompat.app.AlertDialog;
+import androidx.appcompat.app.AppCompatActivity;
 
 public class MainActivity extends AppCompatActivity implements AdapterView.OnItemClickListener {
 
@@ -31,12 +37,9 @@ public class MainActivity extends AppCompatActivity implements AdapterView.OnIte
     private BluetoothConnectionService bluetoothConnectionService;
     private BluetoothAdapter bluetoothAdapter;
     private Button movementBtn;
-    private Button armBtn;
     private Button disconnectBtn;
     private ImageView roverImg;
     private HalAPP halAPP = HalAPP.getInstance();
-    private static final UUID MY_UUID_INSECURE =
-            UUID.fromString("00001101-0000-1000-8000-00805F9B34FB");
     private BluetoothDevice mBTDevice;
     public ArrayList<BluetoothDevice> mBTDevices = new ArrayList<>();
     public DeviceListAdapter listAdapter;
@@ -54,54 +57,35 @@ public class MainActivity extends AppCompatActivity implements AdapterView.OnIte
                 switch (state) {
                     case BluetoothAdapter.STATE_OFF:
                         Log.d(TAG, "onReceive: STATE OFF");
+
+                        movementBtn.setVisibility(View.INVISIBLE);
+                        connectBtn.setVisibility(View.VISIBLE);
+                        roverImg.setVisibility(View.INVISIBLE);
+                        connectBtn.setBackgroundResource(R.drawable.button_normal);
+                        connectBtn.setImageResource(R.drawable.bluetooth);
+                        connectionState.setTextColor(getResources().getColor(R.color.colorAccent));
+                        clickToConnect.setVisibility(View.INVISIBLE);
+                        disconnectBtn.setVisibility(View.INVISIBLE);
+                        connectionState.setText(getString(R.string.rover_disconnected));
+                        clickToConnect.setVisibility(View.VISIBLE);
+                        clickToConnect.setText(getString(R.string.connect));
+                        devicesList.setVisibility(View.INVISIBLE);
+
                         break;
                     case BluetoothAdapter.STATE_TURNING_OFF:
                         Log.d(TAG, "mBroadcastReceiver1: STATE TURNING OFF");
                         break;
                     case BluetoothAdapter.STATE_ON:
                         Log.d(TAG, "mBroadcastReceiver1: STATE ON");
+
+                        Snackbar.make(connectBtn, "Bluetooth turned on", BaseTransientBottomBar.LENGTH_LONG)
+                                .show();
+
+                        startDiscovering();
+
                         break;
                     case BluetoothAdapter.STATE_TURNING_ON:
                         Log.d(TAG, "mBroadcastReceiver1: STATE TURNING ON");
-                        break;
-                }
-            }
-        }
-    };
-
-
-    /**
-     * Broadcast Receiver for changes made to bluetooth states such as:
-     * 1) Discoverability mode on/off or expire.
-     */
-    private final BroadcastReceiver mBroadcastReceiver2 = new BroadcastReceiver() {
-
-        @Override
-        public void onReceive(Context context, Intent intent) {
-            final String action = intent.getAction();
-
-            assert action != null;
-            if (action.equals(BluetoothAdapter.ACTION_SCAN_MODE_CHANGED)) {
-
-                int mode = intent.getIntExtra(BluetoothAdapter.EXTRA_SCAN_MODE, BluetoothAdapter.ERROR);
-
-                switch (mode) {
-                    //Device is in Discoverable Mode
-                    case BluetoothAdapter.SCAN_MODE_CONNECTABLE_DISCOVERABLE:
-                        Log.d(TAG, "mBroadcastReceiver2: Discoverability Enabled.");
-                        break;
-                    //Device not in discoverable mode
-                    case BluetoothAdapter.SCAN_MODE_CONNECTABLE:
-                        Log.d(TAG, "mBroadcastReceiver2: Discoverability Disabled. Able to receive connections.");
-                        break;
-                    case BluetoothAdapter.SCAN_MODE_NONE:
-                        Log.d(TAG, "mBroadcastReceiver2: Discoverability Disabled. Not able to receive connections.");
-                        break;
-                    case BluetoothAdapter.STATE_CONNECTING:
-                        Log.d(TAG, "mBroadcastReceiver2: Connecting....");
-                        break;
-                    case BluetoothAdapter.STATE_CONNECTED:
-                        Log.d(TAG, "mBroadcastReceiver2: Connected.");
                         break;
                 }
             }
@@ -144,8 +128,35 @@ public class MainActivity extends AppCompatActivity implements AdapterView.OnIte
                 //case1: bonded already
                 if (mDevice.getBondState() == BluetoothDevice.BOND_BONDED) {
                     Log.d(TAG, "BroadcastReceiver: BOND_BONDED.");
-                    //inside BroadcastReceiver4
                     mBTDevice = mDevice;
+
+                    connectionState.setText(getString(R.string.rover_connected));
+                    connectionState.setTextColor(getResources().getColor(R.color.green));
+                    connectionState.setTextSize(22);
+                    clickToConnect.setText(getString(R.string.disconnect));
+                    movementBtn.setVisibility(View.VISIBLE);
+                    connectBtn.setVisibility(View.INVISIBLE);
+                    roverImg.setVisibility(View.VISIBLE);
+                    disconnectBtn.setVisibility(View.VISIBLE);
+                    clickToConnect.setVisibility(View.INVISIBLE);
+
+                    new AlertDialog.Builder(MainActivity.this).setMessage("Pairing successful! Start connection?")
+                            .setPositiveButton("Yes", new DialogInterface.OnClickListener() {
+                                @Override
+                                public void onClick(DialogInterface dialog, int which) {
+                                    halAPP.setBluetoothDevice(mBTDevice);
+                                    if (halAPP.getBluetoothDevice() != null) {
+                                        halAPP.startBTConnectionService(MainActivity.this);
+                                        halAPP.startBTConnection();
+                                    } else Log.e(TAG, "Error BT Device is null");
+                                }
+                            })
+                            .setNegativeButton("No", new DialogInterface.OnClickListener() {
+                                @Override
+                                public void onClick(DialogInterface dialog, int which) {
+                                    dialog.cancel();
+                                }
+                            }).show();
                 }
                 //case2: creating a bone
                 if (mDevice.getBondState() == BluetoothDevice.BOND_BONDING) {
@@ -164,7 +175,6 @@ public class MainActivity extends AppCompatActivity implements AdapterView.OnIte
         Log.d(TAG, "onDestroy: called.");
         super.onDestroy();
         unregisterReceiver(mBroadcastReceiver1);
-        unregisterReceiver(mBroadcastReceiver2);
         unregisterReceiver(mBroadcastReceiver3);
         unregisterReceiver(mBroadcastReceiver4);
         bluetoothAdapter.cancelDiscovery();
@@ -179,7 +189,6 @@ public class MainActivity extends AppCompatActivity implements AdapterView.OnIte
         connectionState = findViewById(R.id.connectionStateTextView);
         clickToConnect = findViewById(R.id.clickToConnectTxt);
         movementBtn = findViewById(R.id.moveBtn);
-        armBtn = findViewById(R.id.armBtn);
         roverImg = findViewById(R.id.roverImg);
         disconnectBtn = findViewById(R.id.disconnectBtn);
         devicesList = findViewById(R.id.lvNewDevices);
@@ -193,7 +202,6 @@ public class MainActivity extends AppCompatActivity implements AdapterView.OnIte
         bluetoothAdapter = BluetoothAdapter.getDefaultAdapter();
 
         movementBtn.setVisibility(View.INVISIBLE);
-        armBtn.setVisibility(View.INVISIBLE);
         roverImg.setVisibility(View.INVISIBLE);
         disconnectBtn.setVisibility(View.INVISIBLE);
 
@@ -205,13 +213,13 @@ public class MainActivity extends AppCompatActivity implements AdapterView.OnIte
             connectionState.setTextColor(getResources().getColor(R.color.green));
             connectionState.setTextSize(22);
             clickToConnect.setText(getString(R.string.disconnect));
-            armBtn.setVisibility(View.VISIBLE);
             movementBtn.setVisibility(View.VISIBLE);
             connectBtn.setVisibility(View.INVISIBLE);
             roverImg.setVisibility(View.VISIBLE);
             disconnectBtn.setVisibility(View.VISIBLE);
             clickToConnect.setVisibility(View.INVISIBLE);
         }
+
     }
 
     public void startConnection(View view) {
@@ -227,41 +235,46 @@ public class MainActivity extends AppCompatActivity implements AdapterView.OnIte
                 IntentFilter BTIntent = new IntentFilter(BluetoothAdapter.ACTION_STATE_CHANGED);
                 registerReceiver(mBroadcastReceiver1, BTIntent);
             }
-            Log.d(TAG, "btnDiscover: Looking for unpaired devices.");
+        }
+    }
 
-            if (bluetoothAdapter.isDiscovering()) {
-                bluetoothAdapter.cancelDiscovery();
-                Log.d(TAG, "btnDiscover: Canceling discovery.");
+    public void startDiscovering() {
 
-                //check BT permissions in manifest
-                checkBTPermissions();
+        Log.d(TAG, "Looking for paired devices.");
 
-                bluetoothAdapter.startDiscovery();
-                IntentFilter discoverDevicesIntent = new IntentFilter(BluetoothDevice.ACTION_FOUND);
-                registerReceiver(mBroadcastReceiver3, discoverDevicesIntent);
-            }
-            if (!bluetoothAdapter.isDiscovering()) {
-
-                //check BT permissions in manifest
-                checkBTPermissions();
-
-                bluetoothAdapter.startDiscovery();
-                IntentFilter discoverDevicesIntent = new IntentFilter(BluetoothDevice.ACTION_FOUND);
-                registerReceiver(mBroadcastReceiver3, discoverDevicesIntent);
+        Set<BluetoothDevice> pairedDevices = bluetoothAdapter.getBondedDevices();
+        if (pairedDevices.size() > 0) {
+            for (BluetoothDevice device : pairedDevices) {
+                String deviceName = device.getName();
+                Log.d(TAG, pairedDevices.size() + " paired devices: " + deviceName);
+                if (deviceName.equals("ADRIAN")) {
+                    bluetoothAdapter.cancelDiscovery();
+                }
             }
         }
 
+        Log.d(TAG, "Looking for unpaired devices.");
 
-/*        connectionState.setText(getString(R.string.rover_connected));
-        connectionState.setTextColor(getResources().getColor(R.color.green));
-        connectionState.setTextSize(22);
-        clickToConnect.setText(getString(R.string.disconnect));
-        armBtn.setVisibility(View.VISIBLE);
-        movementBtn.setVisibility(View.VISIBLE);
-        connectBtn.setVisibility(View.INVISIBLE);
-        roverImg.setVisibility(View.VISIBLE);
-        disconnectBtn.setVisibility(View.VISIBLE);
-        clickToConnect.setVisibility(View.INVISIBLE);*/
+        if (bluetoothAdapter.isDiscovering()) {
+            bluetoothAdapter.cancelDiscovery();
+            Log.d(TAG, "btnDiscover: Canceling discovery.");
+
+            checkBTPermissions();
+            bluetoothAdapter.startDiscovery();
+
+            IntentFilter discoverDevicesIntent = new IntentFilter(BluetoothDevice.ACTION_FOUND);
+            registerReceiver(mBroadcastReceiver3, discoverDevicesIntent);
+        }
+        if (!bluetoothAdapter.isDiscovering()) {
+            checkBTPermissions();
+            bluetoothAdapter.startDiscovery();
+
+            IntentFilter discoverDevicesIntent = new IntentFilter(BluetoothDevice.ACTION_FOUND);
+            registerReceiver(mBroadcastReceiver3, discoverDevicesIntent);
+        } else {
+            Toast toast = Toast.makeText(this, "Turn the Bluetooth on to begin searching for devices", Toast.LENGTH_SHORT);
+            toast.show();
+        }
     }
 
     private void checkBTPermissions() {
@@ -273,65 +286,31 @@ public class MainActivity extends AppCompatActivity implements AdapterView.OnIte
         }
     }
 
-    public void connect(View v) {
-
-        if (bluetoothAdapter == null) {
-            Toast toast = Toast.makeText(this, getString(R.string.no_bluetooth), Toast.LENGTH_SHORT);
-            toast.show();
-        } else {
-            if (!bluetoothAdapter.isEnabled()) {
-                Intent enableBluetooth = new Intent(BluetoothAdapter.ACTION_REQUEST_ENABLE);
-                startActivity(enableBluetooth);
-
-                IntentFilter BTIntent = new IntentFilter(BluetoothAdapter.ACTION_STATE_CHANGED);
-                registerReceiver(mBroadcastReceiver1, BTIntent);
-            }
-        }
-    }
-
-
     public void disconnect(View view) {
         bluetoothAdapter.disable();
 
         IntentFilter BTIntent = new IntentFilter(BluetoothAdapter.ACTION_STATE_CHANGED);
         registerReceiver(mBroadcastReceiver1, BTIntent);
-
-        if (!bluetoothAdapter.isEnabled()) {
-            armBtn.setVisibility(View.INVISIBLE);
-            movementBtn.setVisibility(View.INVISIBLE);
-            connectBtn.setVisibility(View.VISIBLE);
-            roverImg.setVisibility(View.INVISIBLE);
-            connectBtn.setBackgroundResource(R.drawable.button_normal);
-            connectBtn.setImageResource(R.drawable.bluetooth);
-            connectionState.setTextColor(getResources().getColor(R.color.colorAccent));
-            clickToConnect.setVisibility(View.INVISIBLE);
-            disconnectBtn.setVisibility(View.INVISIBLE);
-            connectionState.setText(getString(R.string.rover_disconnected));
-            clickToConnect.setVisibility(View.VISIBLE);
-            clickToConnect.setText(getString(R.string.connect));
-        }
     }
 
     @Override
     public void onItemClick(AdapterView<?> adapterView, View view, int i, long l) {
-        //first cancel discovery because its very memory intensive.
         bluetoothAdapter.cancelDiscovery();
 
         Log.d(TAG, "onItemClick: You Clicked on a device.");
         String deviceName = mBTDevices.get(i).getName();
-        String deviceAddress = mBTDevices.get(i).getAddress();
         Log.d(TAG, "onItemClick: deviceName = " + deviceName);
-        Log.d(TAG, "onItemClick: deviceAddress = " + deviceAddress);
 
         //create the bond.
         Log.d(TAG, "Trying to pair with " + deviceName);
         mBTDevices.get(i).createBond();
-
         mBTDevice = mBTDevices.get(i);
+        Log.d(TAG, "Paired with " + deviceName);
     }
 
     public void roverMovement(View view) {
         Intent intent = new Intent(this, MovementActivity.class);
         startActivity(intent);
     }
+
 }

@@ -90,7 +90,6 @@ public class BluetoothConnectionService {
 
     }
 
-
     private class ConnectThread extends Thread {
         private BluetoothSocket mmSocket;
 

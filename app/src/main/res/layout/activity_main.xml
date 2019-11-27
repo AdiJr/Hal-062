@@ -1,5 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
 <RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
@@ -37,7 +38,7 @@
     <ListView
         android:id="@+id/lvNewDevices"
         android:layout_width="match_parent"
-        android:layout_height="280dp"
+        android:layout_height="wrap_content"
         android:layout_marginTop="15dp" />
 
     <ImageView
@@ -48,18 +49,6 @@
         android:layout_marginTop="270dp"
         android:contentDescription="@string/roverimage"
         android:src="@drawable/rover" />
-
-    <Button
-        android:id="@+id/disconnectBtn"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_centerHorizontal="true"
-        android:layout_marginTop="560dp"
-        android:background="@drawable/rounded_button"
-        android:onClick="disconnect"
-        android:padding="12dp"
-        android:text="@string/disconnectBrn"
-        android:textColor="@android:color/white" />
 
     <TextView
         android:id="@+id/clickToConnectTxt"
@@ -76,32 +65,41 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_centerHorizontal="true"
-        android:layout_marginTop="520dp"
+        android:layout_marginTop="600dp"
         android:textColor="@color/colorAccent"
         android:textSize="20sp" />
 
-    <Button
-        android:id="@+id/moveBtn"
-        android:layout_width="160dp"
+    <LinearLayout
+        android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:layout_alignParentStart="true"
-        android:layout_alignParentBottom="true"
-        android:layout_margin="15dp"
-        android:background="@drawable/rounded_button"
-        android:onClick="roverMovement"
-        android:text="@string/movement_control"
-        android:textColor="@android:color/white" />
+        android:layout_marginTop="650dp"
+        android:gravity="center"
+        android:orientation="horizontal">
 
-    <Button
-        android:id="@+id/armBtn"
-        android:layout_width="160dp"
-        android:layout_height="wrap_content"
-        android:layout_alignParentEnd="true"
-        android:layout_alignParentBottom="true"
-        android:layout_margin="15dp"
-        android:background="@drawable/rounded_button"
-        android:text="@string/arm_control"
-        android:textColor="@android:color/white" />
+        <com.google.android.material.button.MaterialButton
+            android:id="@+id/moveBtn"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:onClick="roverMovement"
+            android:text="@string/movement_control"
+            android:textColor="@android:color/white"
+            app:cornerRadius="20dp" />
+
+        <Space
+            android:layout_width="40dp"
+            android:layout_height="wrap_content" />
+
+        <com.google.android.material.button.MaterialButton
+            android:id="@+id/disconnectBtn"
+            style="@style/Widget.MaterialComponents.Button.OutlinedButton"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:onClick="disconnect"
+            android:text="@string/disconnectBrn"
+            android:textColor="@color/colorAccent"
+            app:cornerRadius="20dp" />
+
+    </LinearLayout>
 
 
 </RelativeLayout>

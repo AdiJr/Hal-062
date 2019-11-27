@@ -1,6 +1,6 @@
 package pl.edu.pw.meil.knr;
 
-import android.support.v7.app.AppCompatActivity;
+import androidx.appcompat.app.AppCompatActivity;
 
 public class FrameHandling extends AppCompatActivity {
     HalAPP mAPP = HalAPP.getInstance();

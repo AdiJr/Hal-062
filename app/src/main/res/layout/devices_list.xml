@@ -9,14 +9,19 @@
         android:id="@+id/tvDeviceName"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:textColor="#ff3399"
-        android:textSize="15sp" />
+        android:textColor="@color/colorAccent"
+        android:textSize="16sp" />
 
     <TextView
         android:id="@+id/tvDeviceAddress"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:textColor="#ff3399"
+        android:textColor="@color/colorAccent"
         android:textSize="15sp" />
+
+    <View
+        android:layout_width="match_parent"
+        android:layout_height="2dp"
+        android:background="@color/colorPrimary" />
 
 </LinearLayout>

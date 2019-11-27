@@ -28,31 +28,35 @@
         custom:JV_buttonSizeRatio="12%"
         custom:JV_fixedCenter="true" />
 
-
-    <Switch
-        android:id="@+id/engineSwitch"
-        android:layout_width="wrap_content"
+    <LinearLayout
+        android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:layout_centerHorizontal="true"
-        android:layout_marginTop="500dp"
-        android:text="ENGINE "
-        android:textColor="@color/colorAccent"
-        android:textSize="25sp"
-        android:textStyle="bold" />
+        android:layout_marginTop="550dp"
+        android:gravity="center"
+        android:orientation="horizontal">
 
+        <com.google.android.material.button.MaterialButton
+            android:id="@+id/engineBtnOn"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="ENGINE ON"
+            android:textColor="@android:color/white"
+            android:textSize="15sp" />
 
-    <Button
-        android:id="@+id/switchToArm"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_alignParentBottom="true"
-        android:layout_centerHorizontal="true"
-        android:layout_marginBottom="100dp"
-        android:background="@drawable/rounded_button"
-        android:backgroundTint="@color/colorPrimary"
-        android:padding="15dp"
-        android:text="@string/arm_control"
-        android:textColor="@android:color/white" />
+        <Space
+            android:layout_width="40dp"
+            android:layout_height="wrap_content" />
+
+        <com.google.android.material.button.MaterialButton
+            android:id="@+id/engineBtnOFF"
+            style="@style/Widget.MaterialComponents.Button.OutlinedButton"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="ENGINE OFF"
+            android:textColor="@color/colorAccent"
+            android:textSize="15sp" />
+
+    </LinearLayout>
 
     <ImageView
         android:layout_width="wrap_content"
