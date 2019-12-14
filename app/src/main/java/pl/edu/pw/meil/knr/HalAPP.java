@@ -8,7 +8,7 @@ import java.util.UUID;
 
 public class HalAPP extends Application {
     private BluetoothConnectionService mBluetoothConnection;
-    private BluetoothDevice mBluetoothDevice;
+    private BluetoothDevice bluetoothDevice;
     private static final UUID MY_UUID_INSECURE = UUID.fromString("00001101-0000-1000-8000-00805F9B34FB");
     private static HalAPP singleton;
     private static int connectionStatus = 0; // zmienna odpowiadająca za możliwość wysyłania
@@ -38,16 +38,16 @@ public class HalAPP extends Application {
         mBluetoothConnection = new BluetoothConnectionService(context);
     }
 
-    public void setBluetoothDevice(BluetoothDevice bluetoothDevice) {
-        mBluetoothDevice = bluetoothDevice;
+    public void setBluetoothDevice(BluetoothDevice mBluetoothDevice) {
+        bluetoothDevice = mBluetoothDevice;
     }
 
     public BluetoothDevice getBluetoothDevice() {
-        return mBluetoothDevice;
+        return bluetoothDevice;
     }
 
     public void startBTConnection() {
-        mBluetoothConnection.startClient(mBluetoothDevice, MY_UUID_INSECURE);
+        mBluetoothConnection.startClient(bluetoothDevice, MY_UUID_INSECURE);
     }
 
     public void cancel() {

@@ -20,12 +20,11 @@ public class BluetoothConnectionService {
     private static final UUID MY_UUID_INSECURE =
             UUID.fromString("00001101-0000-1000-8000-00805F9B34FB");
     private final BluetoothAdapter mBluetoothAdapter;
-    Context mContext;
+    private Context mContext;
     private AcceptThread mInsecureAcceptThread;
     private ConnectThread mConnectThread;
     private BluetoothDevice mmDevice;
     private UUID deviceUUID;
-    ProgressDialog mProgressDialog;
     private ConnectedThread mConnectedThread;
 
     public BluetoothConnectionService(Context context) {
@@ -169,9 +168,6 @@ public class BluetoothConnectionService {
     public void startClient(BluetoothDevice device, UUID uuid) {
         Log.d(TAG, "startClient: Started.");
 
-        //init progress dialog
-        mProgressDialog = ProgressDialog.show(mContext, "Connecting Bluetooth", "Please Wait...", true);
-
         mConnectThread = new ConnectThread(device, uuid);
         mConnectThread.start();
         HalAPP.setConnectionStatus(1);
@@ -189,13 +185,6 @@ public class BluetoothConnectionService {
             mmSocket = socket;
             InputStream tmpIn = null;
             OutputStream tmpOut = null;
-
-            //dismiss the progressdialog when connection is established
-            try {
-                mProgressDialog.dismiss();
-            } catch (NullPointerException e) {
-                e.printStackTrace();
-            }
 
 
             try {
