@@ -9,11 +9,9 @@ import java.util.UUID;
 public class HalAPP extends Application {
     private BluetoothConnectionService mBluetoothConnection;
     private BluetoothDevice mBluetoothDevice;
-    private static final UUID MY_UUID_INSECURE =
-            UUID.fromString("00001101-0000-1000-8000-00805F9B34FB");
+    private static final UUID MY_UUID_INSECURE = UUID.fromString("00001101-0000-1000-8000-00805F9B34FB");
     private static HalAPP singleton;
     private static int connectionStatus = 0; // zmienna odpowiadająca za możliwość wysyłania
-
     public static HalAPP getInstance() {
         return singleton;
     }
@@ -40,8 +38,8 @@ public class HalAPP extends Application {
         mBluetoothConnection = new BluetoothConnectionService(context);
     }
 
-    public void setBluetoothDevice(BluetoothDevice mBluetoothDevice) {
-        this.mBluetoothDevice = mBluetoothDevice;
+    public void setBluetoothDevice(BluetoothDevice bluetoothDevice) {
+        mBluetoothDevice = bluetoothDevice;
     }
 
     public BluetoothDevice getBluetoothDevice() {

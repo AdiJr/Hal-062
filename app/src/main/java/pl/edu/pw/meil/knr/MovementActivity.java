@@ -24,6 +24,7 @@ public class MovementActivity extends Activity {
 
         engineBtnOn = findViewById(R.id.engineBtnOn);
         engineBtnOff = findViewById(R.id.engineBtnOFF);
+
         engineBtnOn.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {

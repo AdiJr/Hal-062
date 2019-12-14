@@ -129,16 +129,7 @@ public class MainActivity extends AppCompatActivity implements AdapterView.OnIte
                 if (mDevice.getBondState() == BluetoothDevice.BOND_BONDED) {
                     Log.d(TAG, "BroadcastReceiver: BOND_BONDED.");
                     mBTDevice = mDevice;
-
-                    connectionState.setText(getString(R.string.rover_connected));
-                    connectionState.setTextColor(getResources().getColor(R.color.green));
-                    connectionState.setTextSize(22);
-                    clickToConnect.setText(getString(R.string.disconnect));
-                    movementBtn.setVisibility(View.VISIBLE);
-                    connectBtn.setVisibility(View.INVISIBLE);
-                    roverImg.setVisibility(View.VISIBLE);
-                    disconnectBtn.setVisibility(View.VISIBLE);
-                    clickToConnect.setVisibility(View.INVISIBLE);
+                    Log.d(TAG, "mBTDevice = " + mDevice.toString());
 
                     new AlertDialog.Builder(MainActivity.this).setMessage("Pairing successful! Start connection?")
                             .setPositiveButton("Yes", new DialogInterface.OnClickListener() {
@@ -148,6 +139,17 @@ public class MainActivity extends AppCompatActivity implements AdapterView.OnIte
                                     if (halAPP.getBluetoothDevice() != null) {
                                         halAPP.startBTConnectionService(MainActivity.this);
                                         halAPP.startBTConnection();
+
+                                        connectionState.setText(getString(R.string.rover_connected));
+                                        connectionState.setTextColor(getResources().getColor(R.color.green));
+                                        connectionState.setTextSize(22);
+                                        clickToConnect.setText(getString(R.string.disconnect));
+                                        movementBtn.setVisibility(View.VISIBLE);
+                                        connectBtn.setVisibility(View.INVISIBLE);
+                                        roverImg.setVisibility(View.VISIBLE);
+                                        disconnectBtn.setVisibility(View.VISIBLE);
+                                        clickToConnect.setVisibility(View.INVISIBLE);
+
                                     } else Log.e(TAG, "Error BT Device is null");
                                 }
                             })
@@ -240,7 +242,7 @@ public class MainActivity extends AppCompatActivity implements AdapterView.OnIte
 
     public void startDiscovering() {
 
-        Log.d(TAG, "Looking for paired devices.");
+        Log.d(TAG, "Looking for paired devices...");
 
         Set<BluetoothDevice> pairedDevices = bluetoothAdapter.getBondedDevices();
         if (pairedDevices.size() > 0) {
@@ -253,11 +255,12 @@ public class MainActivity extends AppCompatActivity implements AdapterView.OnIte
             }
         }
 
-        Log.d(TAG, "Looking for unpaired devices.");
+        Log.d(TAG, "Looking for unpaired devices...");
+
 
         if (bluetoothAdapter.isDiscovering()) {
             bluetoothAdapter.cancelDiscovery();
-            Log.d(TAG, "btnDiscover: Canceling discovery.");
+            Log.d(TAG, "btnDiscover: Canceling discovery...");
 
             checkBTPermissions();
             bluetoothAdapter.startDiscovery();
@@ -305,12 +308,10 @@ public class MainActivity extends AppCompatActivity implements AdapterView.OnIte
         Log.d(TAG, "Trying to pair with " + deviceName);
         mBTDevices.get(i).createBond();
         mBTDevice = mBTDevices.get(i);
-        Log.d(TAG, "Paired with " + deviceName);
     }
 
     public void roverMovement(View view) {
         Intent intent = new Intent(this, MovementActivity.class);
         startActivity(intent);
     }
-
 }
