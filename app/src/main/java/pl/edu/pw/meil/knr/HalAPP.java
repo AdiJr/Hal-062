@@ -7,11 +7,9 @@ import android.content.Context;
 import java.util.UUID;
 
 public class HalAPP extends Application {
-    private BluetoothConnectionService mBluetoothConnection;
-    private BluetoothDevice bluetoothDevice;
-    private static final UUID MY_UUID_INSECURE = UUID.fromString("00001101-0000-1000-8000-00805F9B34FB");
     private static HalAPP singleton;
     private static int connectionStatus = 0; // zmienna odpowiadająca za możliwość wysyłania
+
     public static HalAPP getInstance() {
         return singleton;
     }
@@ -29,29 +27,4 @@ public class HalAPP extends Application {
     public static void setConnectionStatus(int connection) {
         HalAPP.connectionStatus = connection;
     }
-
-    public BluetoothConnectionService getBluetoothConnection() {
-        return mBluetoothConnection;
-    }
-
-    public void startBTConnectionService(Context context) {
-        mBluetoothConnection = new BluetoothConnectionService(context);
-    }
-
-    public void setBluetoothDevice(BluetoothDevice mBluetoothDevice) {
-        bluetoothDevice = mBluetoothDevice;
-    }
-
-    public BluetoothDevice getBluetoothDevice() {
-        return bluetoothDevice;
-    }
-
-    public void startBTConnection() {
-        mBluetoothConnection.startClient(bluetoothDevice, MY_UUID_INSECURE);
-    }
-
-    public void cancel() {
-        mBluetoothConnection.cancel();
-    }
-
 }

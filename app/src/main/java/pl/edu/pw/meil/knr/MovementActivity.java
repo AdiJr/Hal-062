@@ -10,8 +10,6 @@ import java.util.TimerTask;
 
 public class MovementActivity extends Activity {
 
-    private Button engineBtnOn;
-    private Button engineBtnOff;
     private FrameHandling mFrameHandling;
 
     @Override
@@ -22,8 +20,8 @@ public class MovementActivity extends Activity {
         mFrameHandling = new FrameHandling();
         final Timer t = new Timer();
 
-        engineBtnOn = findViewById(R.id.engineBtnOn);
-        engineBtnOff = findViewById(R.id.engineBtnOFF);
+        Button engineBtnOn = findViewById(R.id.engineBtnOn);
+        Button engineBtnOff = findViewById(R.id.engineBtnOFF);
 
         engineBtnOn.setOnClickListener(new View.OnClickListener() {
             @Override

@@ -17,7 +17,6 @@ import android.widget.Button;
 import android.widget.ImageButton;
 import android.widget.ImageView;
 import android.widget.ListView;
-import android.widget.ProgressBar;
 import android.widget.TextView;
 import android.widget.Toast;
 
@@ -137,6 +136,7 @@ public class MainActivity extends AppCompatActivity implements AdapterView.OnIte
                                 public void onClick(DialogInterface dialog, int which) {
                                     if (mBTDevice != null) {
                                         bluetoothConnectionService.startClient(mBTDevice, MY_UUID);
+                                        Toast.makeText(getApplicationContext(), "Device Connected!", Toast.LENGTH_LONG).show();
 
                                         connectionState.setText(getString(R.string.rover_connected));
                                         connectionState.setTextColor(getResources().getColor(R.color.green));
@@ -241,7 +241,8 @@ public class MainActivity extends AppCompatActivity implements AdapterView.OnIte
     }
 
     public void startDiscovering() {
-        loader = ProgressDialog.show(this, "Searching...", "Please Wait...", true);
+        loader = ProgressDialog.show(this, "Searching...", "Please wait while searching for " +
+                "Bluetooth devices", true);
         Log.d(TAG, "Looking for paired devices...");
 
         Set<BluetoothDevice> pairedDevices = bluetoothAdapter.getBondedDevices();
@@ -335,7 +336,8 @@ public class MainActivity extends AppCompatActivity implements AdapterView.OnIte
     }
 
     public void roverMovement(View view) {
-        Intent intent = new Intent(this, MovementActivity.class);
+        Intent intent = new Intent(MainActivity.this, MovementActivity.class);
         startActivity(intent);
+        Log.e(TAG, "MovementButton clicked!");
     }
 }
