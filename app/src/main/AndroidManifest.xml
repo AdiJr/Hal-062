@@ -19,6 +19,7 @@
         tools:ignore="GoogleAppIndexingWarning">
         <activity
             android:name=".MovementActivity"
+            android:parentActivityName=".MainActivity"
             android:screenOrientation="portrait" />
         <activity
             android:name=".MainActivity"

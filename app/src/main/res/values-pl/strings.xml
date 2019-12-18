@@ -1,7 +1,12 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
-    <string name="mainName">Łazik KNR Hal-062</string>
     <string name="connectBtnDsc">Połącz</string>
     <string name="btnDcs">KLiknij, aby połączyć</string>
     <string name="connState">Stan połączenia:</string>
+    <string name="connect">Kliknij, aby połączyć</string>
+    <string name="disconnectBrn">Rozłącz</string>
+    <string name="movement_control">Sterowanie</string>
+    <string name="no_bluetooth">Twoje urządzenie nie posiada funkcji Bluetooth</string>
+    <string name="rover_connected">Łazik jest aktualnie POŁĄCZONY</string>
+    <string name="rover_disconnected">Łazik jest aktualnie ROZŁĄCZONY</string>
 </resources>

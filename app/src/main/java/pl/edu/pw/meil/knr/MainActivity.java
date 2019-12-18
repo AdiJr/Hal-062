@@ -103,8 +103,9 @@ public class MainActivity extends AppCompatActivity implements AdapterView.OnIte
         public void onReceive(Context context, Intent intent) {
             final String action = intent.getAction();
             loader.cancel();
+            showDialog();
 
-            Log.d(TAG, "onReceive: ACTION FOUND.");
+            Log.d(TAG, "onReceive: ACTION FOUND");
 
             assert action != null;
             if (action.equals(BluetoothDevice.ACTION_FOUND)) {
@@ -141,7 +142,7 @@ public class MainActivity extends AppCompatActivity implements AdapterView.OnIte
                                         connectionState.setText(getString(R.string.rover_connected));
                                         connectionState.setTextColor(getResources().getColor(R.color.green));
                                         connectionState.setTextSize(22);
-                                        clickToConnect.setText(getString(R.string.disconnect));
+                                        clickToConnect.setText(getString(R.string.disconnectBrn));
                                         movementBtn.setVisibility(View.VISIBLE);
                                         connectBtn.setVisibility(View.INVISIBLE);
                                         roverImg.setVisibility(View.VISIBLE);
@@ -211,15 +212,20 @@ public class MainActivity extends AppCompatActivity implements AdapterView.OnIte
         connectionState.setTextColor(getResources().getColor(R.color.colorAccent));
 
         if (bluetoothAdapter.isEnabled()) {
-            connectionState.setText(getString(R.string.rover_connected));
-            connectionState.setTextColor(getResources().getColor(R.color.green));
-            connectionState.setTextSize(22);
-            clickToConnect.setText(getString(R.string.disconnect));
-            movementBtn.setVisibility(View.VISIBLE);
-            connectBtn.setVisibility(View.INVISIBLE);
-            roverImg.setVisibility(View.VISIBLE);
-            disconnectBtn.setVisibility(View.VISIBLE);
+            bluetoothAdapter.disable();
+
+            movementBtn.setVisibility(View.INVISIBLE);
+            connectBtn.setVisibility(View.VISIBLE);
+            roverImg.setVisibility(View.INVISIBLE);
+            connectBtn.setBackgroundResource(R.drawable.button_normal);
+            connectBtn.setImageResource(R.drawable.bluetooth);
+            connectionState.setTextColor(getResources().getColor(R.color.colorAccent));
             clickToConnect.setVisibility(View.INVISIBLE);
+            disconnectBtn.setVisibility(View.INVISIBLE);
+            connectionState.setText(getString(R.string.rover_disconnected));
+            clickToConnect.setVisibility(View.VISIBLE);
+            clickToConnect.setText(getString(R.string.connect));
+            devicesList.setVisibility(View.INVISIBLE);
         }
 
     }
@@ -293,6 +299,61 @@ public class MainActivity extends AppCompatActivity implements AdapterView.OnIte
         registerReceiver(mBroadcastReceiver1, BTIntent);
     }
 
+    public void showDialog() {
+        final AlertDialog.Builder newDevicesDialog = new AlertDialog.Builder(this);
+        newDevicesDialog.setTitle("Available devices");
+        newDevicesDialog.setNegativeButton("cancel", new DialogInterface.OnClickListener() {
+            @Override
+            public void onClick(DialogInterface dialog, int which) {
+                dialog.cancel();
+            }
+        });
+
+        newDevicesDialog.setAdapter(listAdapter, new DialogInterface.OnClickListener() {
+            @Override
+            public void onClick(DialogInterface dialog, int which) {
+                bluetoothAdapter.cancelDiscovery();
+
+                String deviceName = mBTDevices.get(which).getName();
+                Log.d(TAG, "onItemClick: deviceName = " + deviceName);
+                Log.d(TAG, "Trying to pair with " + deviceName);
+                mBTDevices.get(which).createBond();
+                mBTDevice = mBTDevices.get(which);
+
+                Log.d(TAG, "mBTDevice: " + mBTDevice);
+
+                new AlertDialog.Builder(MainActivity.this).setMessage("Start connection?")
+                        .setPositiveButton("Yes", new DialogInterface.OnClickListener() {
+                            @Override
+                            public void onClick(DialogInterface dialog, int which) {
+                                if (mBTDevice != null) {
+                                    bluetoothConnectionService.startClient(mBTDevice, MY_UUID);
+
+                                    devicesList.setVisibility(View.GONE);
+                                    connectionState.setText(getString(R.string.rover_connected));
+                                    connectionState.setTextColor(getResources().getColor(R.color.green));
+                                    connectionState.setTextSize(22);
+                                    clickToConnect.setText(getString(R.string.btnDcs));
+                                    movementBtn.setVisibility(View.VISIBLE);
+                                    connectBtn.setVisibility(View.INVISIBLE);
+                                    roverImg.setVisibility(View.VISIBLE);
+                                    disconnectBtn.setVisibility(View.VISIBLE);
+                                    clickToConnect.setVisibility(View.INVISIBLE);
+
+                                } else Log.e(TAG, "Error BT Device is null");
+                            }
+                        })
+                        .setNegativeButton("No", new DialogInterface.OnClickListener() {
+                            @Override
+                            public void onClick(DialogInterface dialog, int which) {
+                                dialog.cancel();
+                            }
+                        }).show();
+            }
+        });
+        newDevicesDialog.show();
+    }
+
     @Override
     public void onItemClick(AdapterView<?> adapterView, View view, int i, long l) {
         bluetoothAdapter.cancelDiscovery();
@@ -317,7 +378,7 @@ public class MainActivity extends AppCompatActivity implements AdapterView.OnIte
                             connectionState.setText(getString(R.string.rover_connected));
                             connectionState.setTextColor(getResources().getColor(R.color.green));
                             connectionState.setTextSize(22);
-                            clickToConnect.setText(getString(R.string.disconnect));
+                            clickToConnect.setText(getString(R.string.disconnectBrn));
                             movementBtn.setVisibility(View.VISIBLE);
                             connectBtn.setVisibility(View.INVISIBLE);
                             roverImg.setVisibility(View.VISIBLE);
@@ -337,7 +398,6 @@ public class MainActivity extends AppCompatActivity implements AdapterView.OnIte
 
     public void roverMovement(View view) {
         Intent intent = new Intent(MainActivity.this, MovementActivity.class);
-        startActivity(intent);
-        Log.e(TAG, "MovementButton clicked!");
+        this.startActivity(intent);
     }
 }

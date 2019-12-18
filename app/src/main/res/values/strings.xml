@@ -1,19 +1,15 @@
 <resources>
     <string name="app_name" translatable="false">Hal-062</string>
     <string name="connectBtnDsc">Connect</string>
-    <string name="mainName">Łazik KNR Hal-062</string>
     <string name="btnDcs">Click to connect</string>
     <string name="connState">Connection State:</string>
     <string name="rover_disconnected">The Hal Rover is currently DISCONNECTED</string>
     <string name="rover_connected">The Hal Rover is currently CONNECTED</string>
-    <string name="disconnect">Click to disconnect</string>
-    <string name="knr_logo">KNR_logo</string>
-    <string name="rover_team_logo">rover_team_logo</string>
+    <string name="knr_logo" translatable="false">KNR_logo</string>
+    <string name="rover_team_logo" translatable="false">rover_team_logo</string>
     <string name="no_bluetooth">Your device does not support bluetooth</string>
     <string name="movement_control">Movement Control</string>
-    <string name="arm_control">Arm Control</string>
-    <string name="roverimage">RoverImage</string>
+    <string name="roverimage" translatable="false">RoverImage</string>
     <string name="disconnectBrn">Disconnect</string>
     <string name="connect">Click to connect</string>
-    <string name="control_title">Rover Movement Control</string>
 </resources>

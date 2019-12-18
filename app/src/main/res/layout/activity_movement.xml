@@ -5,15 +5,6 @@
     android:layout_height="fill_parent"
     android:background="@android:color/white">
 
-    <ImageView
-        android:id="@+id/knr_logo"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_marginLeft="40dp"
-        android:layout_marginTop="-260dp"
-        android:layout_marginRight="40dp"
-        android:src="@drawable/knr_logo" />
-
     <pl.edu.pw.meil.knr.JoystickView xmlns:custom="http://schemas.android.com/apk/res-auto"
         android:id="@+id/joystickView"
         android:layout_width="wrap_content"
