@@ -71,27 +71,17 @@ public class BluetoothConnectionService {
 
             //talk about this is in the 3rd
             if (socket != null) {
-                connected(socket, mmDevice);
+                connected(socket);
             }
 
             Log.i(TAG, "END mAcceptThread ");
         }
-
-        public void cancel() {
-            Log.d(TAG, "cancel: Canceling AcceptThread.");
-            try {
-                mmServerSocket.close();
-            } catch (IOException e) {
-                Log.e(TAG, "cancel: Close of AcceptThread ServerSocket failed. " + e.getMessage());
-            }
-        }
-
     }
 
     private class ConnectThread extends Thread {
         private BluetoothSocket mmSocket;
 
-        public ConnectThread(BluetoothDevice device, UUID uuid) {
+        ConnectThread(BluetoothDevice device, UUID uuid) {
             Log.d(TAG, "ConnectThread: started.");
             mmDevice = device;
             deviceUUID = uuid;
@@ -99,8 +89,6 @@ public class BluetoothConnectionService {
 
         public void run() {
             BluetoothSocket tmp = null;
-            Log.i(TAG, "RUN mConnectThread ");
-
             // Get a BluetoothSocket for a connection with the
             // given BluetoothDevice
             try {
@@ -112,8 +100,6 @@ public class BluetoothConnectionService {
             }
 
             mmSocket = tmp;
-
-            // Always cancel discovery because it will slow down a connection
             mBluetoothAdapter.cancelDiscovery();
 
             // Make a connection to the BluetoothSocket
@@ -134,33 +120,7 @@ public class BluetoothConnectionService {
                 }
                 Log.d(TAG, "run: ConnectThread: Could not connect to UUID: " + MY_UUID_INSECURE);
             }
-
-
-            connected(mmSocket, mmDevice);
-        }
-
-        public void cancel() {
-            try {
-                Log.d(TAG, "cancel: Closing Client Socket.");
-                mmSocket.close();
-                HalAPP.setConnectionStatus(0);
-            } catch (IOException e) {
-                Log.e(TAG, "cancel: close() of mmSocket in Connectthread failed. " + e.getMessage());
-            }
-        }
-    }
-
-    public synchronized void start() {
-        Log.d(TAG, "start");
-
-        // Cancel any thread attempting to make a connection
-        if (mConnectThread != null) {
-            mConnectThread.cancel();
-            mConnectThread = null;
-        }
-        if (mInsecureAcceptThread == null) {
-            mInsecureAcceptThread = new AcceptThread();
-            mInsecureAcceptThread.start();
+            connected(mmSocket);
         }
     }
 
@@ -178,7 +138,7 @@ public class BluetoothConnectionService {
         private final InputStream mmInStream;
         private final OutputStream mmOutStream;
 
-        public ConnectedThread(BluetoothSocket socket) {
+        ConnectedThread(BluetoothSocket socket) {
             Log.d(TAG, "ConnectedThread: Starting.");
 
             mmSocket = socket;
@@ -198,7 +158,7 @@ public class BluetoothConnectionService {
 
         }
 
-        public void run() {
+       /* public void run() {
             byte[] buffer = new byte[1024];  // buffer store for the stream
 
             int bytes; // bytes returned from read()
@@ -215,10 +175,10 @@ public class BluetoothConnectionService {
                     break;
                 }
             }
-        }
+        }*/
 
         //Call this from the main activity to send data to the remote device
-        public void write(byte[] bytes) {
+        private void write(byte[] bytes) {
             String text = new String(bytes, Charset.defaultCharset());
             Log.d(TAG, "write: Writing to outputstream: " + text);
             try {
@@ -229,16 +189,16 @@ public class BluetoothConnectionService {
         }
 
         /* Call this from the main activity to shutdown the connection */
-        public void cancel() {
+        void cancel() {
             try {
                 mmSocket.close();
-            } catch (IOException e) {
+            } catch (IOException ignored) {
             }
         }
     }
 
 
-    private void connected(BluetoothSocket mmSocket, BluetoothDevice mmDevice) {
+    private void connected(BluetoothSocket mmSocket) {
         Log.d(TAG, "connected: Starting.");
 
         // Start the thread to manage the connection and perform transmissions
@@ -263,7 +223,7 @@ public class BluetoothConnectionService {
         mConnectedThread.write(out);
     }
 
-    public void cancel() {
+    void cancel() {
         mConnectedThread.cancel();
     }
 }

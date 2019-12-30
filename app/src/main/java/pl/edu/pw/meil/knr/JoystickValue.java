@@ -8,7 +8,6 @@ public class JoystickValue {
 
     static public int joystickX;
     static public int joystickY;
-    static public FrameHandling mFrameHandling;
 
     static public void setX(int x) {
         joystickX = x;

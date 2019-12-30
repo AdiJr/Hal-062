@@ -20,6 +20,7 @@ public class MovementActivity extends Activity {
         mFrameHandling = new FrameHandling();
         final Timer t = new Timer();
 
+        JoystickView joystick = findViewById(R.id.joystickView);
         Button engineBtnOn = findViewById(R.id.engineBtnOn);
         Button engineBtnOff = findViewById(R.id.engineBtnOFF);
 
@@ -66,5 +67,17 @@ public class MovementActivity extends Activity {
                 0,
                 //Set the amount of time between each execution (in milliseconds)
                 100);
+
+        joystick.setOnMoveListener(new JoystickView.OnMoveListener() {
+            @Override
+            public void onMove(int angle, int strength) {
+                int x = -(int) ((double) strength * Math.sin((double) angle * 6.28 / 360.0));
+                int y = (int) ((double) strength * Math.cos((double) angle * 6.28 / 360.0));
+                JoystickValue.setX(x);
+                JoystickValue.setY(y);
+            }
+        });
+
     }
+
 }
