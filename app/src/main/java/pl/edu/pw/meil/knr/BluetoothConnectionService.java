@@ -16,10 +16,8 @@ import java.util.UUID;
 public class BluetoothConnectionService {
     private static final String TAG = "BluetoothConnectionServ";
     private static final String appName = "Hal-062";
-    private static final UUID MY_UUID_INSECURE =
-            UUID.fromString("00001101-0000-1000-8000-00805F9B34FB");
+    private static final UUID MY_UUID_INSECURE = UUID.fromString("00001101-0000-1000-8000-00805F9B34FB");
     private final BluetoothAdapter mBluetoothAdapter;
-    private Context mContext;
     private AcceptThread mInsecureAcceptThread;
     private ConnectThread mConnectThread;
     private BluetoothDevice mmDevice;
@@ -27,7 +25,6 @@ public class BluetoothConnectionService {
     private ConnectedThread mConnectedThread;
 
     public BluetoothConnectionService(Context context) {
-        mContext = context;
         mBluetoothAdapter = BluetoothAdapter.getDefaultAdapter();
     }
 
@@ -200,30 +197,13 @@ public class BluetoothConnectionService {
 
     private void connected(BluetoothSocket mmSocket) {
         Log.d(TAG, "connected: Starting.");
-
         // Start the thread to manage the connection and perform transmissions
         mConnectedThread = new ConnectedThread(mmSocket);
         mConnectedThread.start();
     }
 
-    /*
-     * Write to the ConnectedThread in an unsynchronized manner
-     *
-     * @param out The bytes to write
-     * @see ConnectedThread#write(byte[])
-     */
-
     public void write(byte[] out) {
-        // Create temporary object
-        ConnectedThread r;
-
-        // Synchronize a copy of the ConnectedThread
         Log.d(TAG, "write: Write Called.");
-        //perform the write
         mConnectedThread.write(out);
-    }
-
-    void cancel() {
-        mConnectedThread.cancel();
     }
 }

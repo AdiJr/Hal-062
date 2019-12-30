@@ -97,17 +97,11 @@ public class MainActivity extends AppCompatActivity implements AdapterView.OnIte
             assert action != null;
             if (action.equals(BluetoothDevice.ACTION_FOUND)) {
                 BluetoothDevice device = intent.getParcelableExtra(BluetoothDevice.EXTRA_DEVICE);
-                if (device.getName() == "ADRIAN") {
-                    mBTDevices.add(device);
-                    mBluetoothAdapter.cancelDiscovery();
-                    Log.d(TAG, "ADRIAN found, discovery cancelled");
-                } else {
-                    mBTDevices.add(device);
-                    Log.d(TAG, "onReceive: " + device.getName() + ": " + device.getAddress());
-                }
-                listAdapter = new DeviceListAdapter(context, R.layout.devices_list, mBTDevices);
-                mDevicesList.setAdapter(listAdapter);
+                mBTDevices.add(device);
+                Log.d(TAG, "onReceive: " + device.getName() + ": " + device.getAddress());
             }
+            listAdapter = new DeviceListAdapter(context, R.layout.devices_list, mBTDevices);
+            mDevicesList.setAdapter(listAdapter);
         }
     };
 
