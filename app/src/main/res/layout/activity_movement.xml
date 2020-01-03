@@ -1,36 +1,43 @@
 <?xml version="1.0" encoding="utf-8"?>
 <RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:custom="http://schemas.android.com/apk/res-auto"
     android:id="@+id/enginecontrol_activity"
     android:layout_width="fill_parent"
     android:layout_height="fill_parent"
     android:background="@android:color/white">
 
-    <pl.edu.pw.meil.knr.JoystickView xmlns:custom="http://schemas.android.com/apk/res-auto"
+    <ImageView
+        android:layout_width="match_parent"
+        android:layout_height="133dp"
+        android:layout_marginTop="40dp"
+        android:layout_marginLeft="20dp"
+        android:layout_marginRight="20dp"
+        android:src="@drawable/knr_rover_logo" />
+
+    <pl.edu.pw.meil.knr.JoystickView
         android:id="@+id/joystickView"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_centerHorizontal="true"
-        android:layout_marginTop="130dp"
-        android:background="@drawable/knr"
+        android:background="@drawable/wind_rose"
+        android:layout_centerInParent="true"
         custom:JV_backgroundSizeRatio="90%"
-        custom:JV_borderColor="@color/colorAccent"
-        custom:JV_borderWidth="4dp"
-        custom:JV_buttonImage="@drawable/joystick_button"
-        custom:JV_buttonSizeRatio="12%"
+        custom:JV_buttonImage="@drawable/gps"
+        custom:JV_buttonSizeRatio="18%"
         custom:JV_fixedCenter="true" />
 
     <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:layout_marginTop="550dp"
         android:gravity="center"
+        android:layout_marginTop="40dp"
+        android:layout_below="@id/joystickView"
         android:orientation="horizontal">
 
         <com.google.android.material.button.MaterialButton
             android:id="@+id/engineBtnOn"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:text="ENGINE ON"
+            android:text="@string/engine_on"
             android:textColor="@android:color/white"
             android:textSize="15sp" />
 
@@ -43,18 +50,10 @@
             style="@style/Widget.MaterialComponents.Button.OutlinedButton"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:text="ENGINE OFF"
+            android:text="@string/engine_off"
             android:textColor="@color/colorAccent"
             android:textSize="15sp" />
 
     </LinearLayout>
-
-    <ImageView
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_marginLeft="20dp"
-        android:layout_marginTop="600dp"
-        android:layout_marginRight="20dp"
-        android:src="@drawable/knr_rover_logo" />
 
 </RelativeLayout>

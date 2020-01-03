@@ -9,4 +9,6 @@
     <string name="no_bluetooth">Your device does not support bluetooth</string>
     <string name="rover_connected">The Hal Rover is currently CONNECTED</string>
     <string name="rover_disconnected">The Hal Rover is currently DISCONNECTED</string>
+    <string name="engine_off">ENGINE OFF</string>
+    <string name="engine_on">ENGINE ON</string>
 </resources>

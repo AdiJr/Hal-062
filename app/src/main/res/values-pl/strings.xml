@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
     <string name="connectBtnDsc">Połącz</string>
-    <string name="btnDcs">KLiknij, aby połączyć</string>
+    <string name="btnDcs">Kliknij, aby połączyć</string>
     <string name="connState">Stan połączenia:</string>
     <string name="connect">Kliknij, aby połączyć</string>
     <string name="disconnectBrn">Rozłącz</string>
@@ -9,4 +9,6 @@
     <string name="no_bluetooth">Twoje urządzenie nie posiada funkcji Bluetooth</string>
     <string name="rover_connected">Łazik jest aktualnie POŁĄCZONY</string>
     <string name="rover_disconnected">Łazik jest aktualnie ROZŁĄCZONY</string>
+    <string name="engine_off">WYŁĄCZ SILNIK</string>
+    <string name="engine_on">WŁĄCZ SILNIK</string>
 </resources>

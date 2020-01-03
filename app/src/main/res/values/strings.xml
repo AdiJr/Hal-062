@@ -12,4 +12,6 @@
     <string name="roverimage" translatable="false">RoverImage</string>
     <string name="disconnectBrn">Disconnect</string>
     <string name="connect">Click to connect</string>
+    <string name="engine_off">ENGINE OFF</string>
+    <string name="engine_on">ENGINE ON</string>
 </resources>

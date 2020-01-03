@@ -19,7 +19,6 @@ public class BluetoothConnectionService {
     private static final UUID MY_UUID_INSECURE = UUID.fromString("00001101-0000-1000-8000-00805F9B34FB");
     private final BluetoothAdapter mBluetoothAdapter;
     private AcceptThread mInsecureAcceptThread;
-    private ConnectThread mConnectThread;
     private BluetoothDevice mmDevice;
     private UUID deviceUUID;
     private ConnectedThread mConnectedThread;
@@ -124,7 +123,7 @@ public class BluetoothConnectionService {
     public void startClient(BluetoothDevice device, UUID uuid) {
         Log.d(TAG, "startClient: Started.");
 
-        mConnectThread = new ConnectThread(device, uuid);
+        ConnectThread mConnectThread = new ConnectThread(device, uuid);
         mConnectThread.start();
         HalAPP.setConnectionStatus(1);
     }

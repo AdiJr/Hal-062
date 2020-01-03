@@ -38,7 +38,7 @@
         android:id="@+id/connectBtn"
         android:layout_width="281dp"
         android:layout_height="273dp"
-        android:background="@drawable/button_normal"
+        android:background="@android:color/white"
         android:contentDescription="@string/connectBtnDsc"
         android:onClick="startConnection"
         android:src="@drawable/bluetooth"
@@ -108,28 +108,26 @@
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="parent">
+        app:layout_constraintTop_toBottomOf="@+id/connectionStateTextView">
 
         <com.google.android.material.button.MaterialButton
             android:id="@+id/moveBtn"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_marginStart="24dp"
-            android:layout_marginTop="16dp"
-            android:layout_marginBottom="16dp"
             android:onClick="roverMovement"
             android:text="@string/movement_control"
             android:textColor="@android:color/white"
             app:cornerRadius="20dp" />
 
+        <Space
+            android:layout_width="40dp"
+            android:layout_height="wrap_content" />
+
         <com.google.android.material.button.MaterialButton
             android:id="@+id/disconnectBtn"
             style="@style/Widget.MaterialComponents.Button.OutlinedButton"
-            android:layout_width="142dp"
-            android:layout_height="51dp"
-            android:layout_marginStart="44dp"
-            android:layout_marginEnd="32dp"
-            android:layout_marginBottom="12dp"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
             android:onClick="disconnect"
             android:text="@string/disconnectBrn"
             android:textColor="@color/colorAccent"

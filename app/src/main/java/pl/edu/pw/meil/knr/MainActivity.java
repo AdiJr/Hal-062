@@ -9,6 +9,7 @@ import android.content.Context;
 import android.content.DialogInterface;
 import android.content.Intent;
 import android.content.IntentFilter;
+import android.os.Build;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.View;
@@ -31,7 +32,6 @@ public class MainActivity extends AppCompatActivity implements AdapterView.OnIte
     private TextView mConnectionState;
     private TextView mConnectTextView;
     private ImageButton mConnectBtn;
-    private BluetoothConnectionService bluetoothConnectionService;
     private BluetoothAdapter mBluetoothAdapter;
     private Button mMovementActivityButton;
     private Button mDisconnectButton;
@@ -42,6 +42,7 @@ public class MainActivity extends AppCompatActivity implements AdapterView.OnIte
     public HalAPP mHallAPP;
     private ListView mDevicesList;
     private ProgressDialog mLoader;
+    private AlertDialog.Builder newDevicesDialog;
 
     // Receiver for listening to Bluetooth state changes
     private final BroadcastReceiver mBluetoothStateReceiver = new BroadcastReceiver() {
@@ -57,7 +58,6 @@ public class MainActivity extends AppCompatActivity implements AdapterView.OnIte
                         mMovementActivityButton.setVisibility(View.INVISIBLE);
                         mConnectBtn.setVisibility(View.VISIBLE);
                         mRoverImg.setVisibility(View.INVISIBLE);
-                        mConnectBtn.setBackgroundResource(R.drawable.button_normal);
                         mConnectBtn.setImageResource(R.drawable.bluetooth);
                         mConnectionState.setTextColor(getResources().getColor(R.color.colorAccent));
                         mConnectTextView.setVisibility(View.INVISIBLE);
@@ -88,20 +88,28 @@ public class MainActivity extends AppCompatActivity implements AdapterView.OnIte
         public void onReceive(Context context, Intent intent) {
 
             final String action = intent.getAction();
-
             mLoader.cancel();
-            showDialog();
 
             Log.d(TAG, "onReceive: ACTION FOUND");
-
             assert action != null;
             if (action.equals(BluetoothDevice.ACTION_FOUND)) {
                 BluetoothDevice device = intent.getParcelableExtra(BluetoothDevice.EXTRA_DEVICE);
                 mBTDevices.add(device);
+
+                int i = 1;
+                if (mBTDevices.get(i).getName().equals(mBTDevices.get(i - 1).getName())) {
+                    mBTDevices.remove(i);
+                }
+
+                if (device.getName().equals("Elon_Musk")) {
+                    mBluetoothAdapter.cancelDiscovery();
+                }
                 Log.d(TAG, "onReceive: " + device.getName() + ": " + device.getAddress());
             }
             listAdapter = new DeviceListAdapter(context, R.layout.devices_list, mBTDevices);
             mDevicesList.setAdapter(listAdapter);
+
+            showDialog();
         }
     };
 
@@ -184,6 +192,7 @@ public class MainActivity extends AppCompatActivity implements AdapterView.OnIte
         mDisconnectButton = findViewById(R.id.disconnectBtn);
         mDevicesList = findViewById(R.id.lvNewDevices);
         mBTDevices = new ArrayList<>();
+        newDevicesDialog = new AlertDialog.Builder(this);
 
         mHallAPP = HalAPP.getInstance();
 
@@ -248,10 +257,15 @@ public class MainActivity extends AppCompatActivity implements AdapterView.OnIte
     }
 
     private void checkBTPermissions() {
-        int permissionCheck = this.checkSelfPermission("Manifest.permission.ACCESS_FINE_LOCATION");
-        permissionCheck += this.checkSelfPermission("Manifest.permission.ACCESS_COARSE_LOCATION");
+        int permissionCheck = 0;
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.M) {
+            permissionCheck = this.checkSelfPermission("Manifest.permission.ACCESS_FINE_LOCATION");
+            permissionCheck += this.checkSelfPermission("Manifest.permission.ACCESS_COARSE_LOCATION");
+        }
         if (permissionCheck != 0) {
-            this.requestPermissions(new String[]{Manifest.permission.ACCESS_FINE_LOCATION, Manifest.permission.ACCESS_COARSE_LOCATION}, 1001); //Any number
+            if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.M) {
+                this.requestPermissions(new String[]{Manifest.permission.ACCESS_FINE_LOCATION, Manifest.permission.ACCESS_COARSE_LOCATION}, 1001); //Any number
+            }
         }
     }
 
@@ -263,15 +277,7 @@ public class MainActivity extends AppCompatActivity implements AdapterView.OnIte
     }
 
     public void showDialog() {
-        final AlertDialog.Builder newDevicesDialog = new AlertDialog.Builder(this);
         newDevicesDialog.setTitle("Available devices");
-        newDevicesDialog.setNegativeButton("cancel", new DialogInterface.OnClickListener() {
-            @Override
-            public void onClick(DialogInterface dialog, int which) {
-                dialog.cancel();
-            }
-        });
-
         newDevicesDialog.setAdapter(listAdapter, new DialogInterface.OnClickListener() {
             @Override
             public void onClick(DialogInterface dialog, int which) {
@@ -282,7 +288,6 @@ public class MainActivity extends AppCompatActivity implements AdapterView.OnIte
                 Log.d(TAG, "Trying to pair with " + deviceName);
                 mBTDevices.get(which).createBond();
                 mBTDevice = mBTDevices.get(which);
-
 
                 new AlertDialog.Builder(MainActivity.this).setMessage("Start connection?")
                         .setPositiveButton("Yes", new DialogInterface.OnClickListener() {
