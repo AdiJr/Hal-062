@@ -22,6 +22,7 @@ import android.widget.TextView;
 import android.widget.Toast;
 
 import java.util.ArrayList;
+import java.util.LinkedHashSet;
 
 import androidx.appcompat.app.AlertDialog;
 import androidx.appcompat.app.AppCompatActivity;
@@ -43,6 +44,7 @@ public class MainActivity extends AppCompatActivity implements AdapterView.OnIte
     private ListView mDevicesList;
     private ProgressDialog mLoader;
     private AlertDialog.Builder newDevicesDialog;
+    private LinkedHashSet<BluetoothDevice> linkedHashSet = new LinkedHashSet<>();
 
     // Receiver for listening to Bluetooth state changes
     private final BroadcastReceiver mBluetoothStateReceiver = new BroadcastReceiver() {
@@ -96,10 +98,9 @@ public class MainActivity extends AppCompatActivity implements AdapterView.OnIte
                 BluetoothDevice device = intent.getParcelableExtra(BluetoothDevice.EXTRA_DEVICE);
                 mBTDevices.add(device);
 
-                int i = 1;
-                if (mBTDevices.get(i).getName().equals(mBTDevices.get(i - 1).getName())) {
-                    mBTDevices.remove(i);
-                }
+                linkedHashSet.addAll(mBTDevices);
+                mBTDevices.clear();
+                mBTDevices.addAll(linkedHashSet);
 
                 if (device.getName().equals("Elon_Musk")) {
                     mBluetoothAdapter.cancelDiscovery();
