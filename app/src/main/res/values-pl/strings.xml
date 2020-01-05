@@ -11,4 +11,7 @@
     <string name="rover_disconnected">Łazik jest aktualnie ROZŁĄCZONY</string>
     <string name="engine_off">WYŁĄCZ SILNIK</string>
     <string name="engine_on">WŁĄCZ SILNIK</string>
+    <string name="engine_status_off">STATUS SILNIKA: WYŁĄCZONY</string>
+    <string name="engine_status_on">STATUS SILNIKA: WŁĄCZONY</string>
+    <string name="engine_status_info">Kliknij \"Włącz silnik\" żeby zacząć sterować łazikiem</string>
 </resources>

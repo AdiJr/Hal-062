@@ -9,7 +9,7 @@
     tools:context=".MainActivity">
 
     <ImageView
-        android:id="@+id/imageView"
+        android:id="@+id/knr_logo_image"
         android:layout_width="0dp"
         android:layout_height="109dp"
         android:layout_marginStart="8dp"
@@ -18,10 +18,10 @@
         android:src="@drawable/knr_rover_logo"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/imageView2" />
+        app:layout_constraintTop_toBottomOf="@+id/knr_rover_logo_image" />
 
     <ImageView
-        android:id="@+id/imageView2"
+        android:id="@+id/knr_rover_logo_image"
         android:layout_width="0dp"
         android:layout_height="120dp"
         android:layout_marginStart="16dp"
@@ -35,7 +35,7 @@
         app:layout_constraintTop_toTopOf="parent" />
 
     <ImageButton
-        android:id="@+id/connectBtn"
+        android:id="@+id/bluetooth_imageButton"
         android:layout_width="281dp"
         android:layout_height="273dp"
         android:background="@android:color/white"
@@ -44,7 +44,7 @@
         android:src="@drawable/bluetooth"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/imageView" />
+        app:layout_constraintTop_toBottomOf="@+id/knr_logo_image" />
 
     <ListView
         android:id="@+id/lvNewDevices"
@@ -60,16 +60,16 @@
         app:layout_constraintTop_toTopOf="parent" />
 
     <ImageView
-        android:id="@+id/roverImg"
+        android:id="@+id/connected_image"
         android:layout_width="273dp"
         android:layout_height="270dp"
         android:layout_marginStart="80dp"
         android:layout_marginEnd="80dp"
         android:contentDescription="@string/roverimage"
-        android:src="@drawable/rover"
+        android:src="@drawable/secure"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/imageView" />
+        app:layout_constraintTop_toBottomOf="@+id/knr_logo_image" />
 
     <TextView
         android:id="@+id/clickToConnectTxt"
@@ -82,7 +82,7 @@
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintHorizontal_bias="0.498"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/connectBtn" />
+        app:layout_constraintTop_toBottomOf="@+id/bluetooth_imageButton" />
 
     <TextView
         android:id="@+id/connectionStateTextView"
@@ -95,7 +95,6 @@
         android:textAlignment="center"
         android:textColor="@color/colorAccent"
         android:textSize="20sp"
-        android:textStyle="bold"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintHorizontal_bias="0.0"
         app:layout_constraintStart_toStartOf="parent"
@@ -118,8 +117,7 @@
             android:layout_height="wrap_content"
             android:onClick="roverMovement"
             android:text="@string/movement_control"
-            android:textColor="@android:color/white"
-            app:cornerRadius="20dp" />
+            android:textColor="@android:color/white" />
 
         <Space
             android:layout_width="40dp"
@@ -132,8 +130,7 @@
             android:layout_height="wrap_content"
             android:onClick="disconnect"
             android:text="@string/disconnectBrn"
-            android:textColor="@color/colorAccent"
-            app:cornerRadius="20dp" />
+            android:textColor="@color/colorAccent" />
 
     </LinearLayout>
 

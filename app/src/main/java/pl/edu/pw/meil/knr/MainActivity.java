@@ -185,11 +185,11 @@ public class MainActivity extends AppCompatActivity implements AdapterView.OnIte
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
 
-        mConnectBtn = findViewById(R.id.connectBtn);
+        mConnectBtn = findViewById(R.id.bluetooth_imageButton);
         mConnectionState = findViewById(R.id.connectionStateTextView);
         mConnectTextView = findViewById(R.id.clickToConnectTxt);
         mMovementActivityButton = findViewById(R.id.moveBtn);
-        mRoverImg = findViewById(R.id.roverImg);
+        mRoverImg = findViewById(R.id.connected_image);
         mDisconnectButton = findViewById(R.id.disconnectBtn);
         mDevicesList = findViewById(R.id.lvNewDevices);
         mBTDevices = new ArrayList<>();

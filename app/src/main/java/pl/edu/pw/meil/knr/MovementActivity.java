@@ -4,6 +4,7 @@ import android.app.Activity;
 import android.os.Bundle;
 import android.view.View;
 import android.widget.Button;
+import android.widget.TextView;
 
 import java.util.Timer;
 import java.util.TimerTask;
@@ -19,10 +20,11 @@ public class MovementActivity extends Activity {
 
         mFrameHandling = new FrameHandling();
         final Timer t = new Timer();
-
         JoystickView joystick = findViewById(R.id.joystickView);
-        Button engineBtnOn = findViewById(R.id.engineBtnOn);
-        Button engineBtnOff = findViewById(R.id.engineBtnOFF);
+        Button engineBtnOn = findViewById(R.id.engineOnBtn);
+        Button engineBtnOff = findViewById(R.id.engineOffBtn);
+        final TextView engineStatus = findViewById(R.id.engineStatusTxt);
+        engineStatus.setText(R.string.engine_status_info);
 
         engineBtnOn.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -31,6 +33,7 @@ public class MovementActivity extends Activity {
                     int[] charTab = {1, 1, 1, 40};
                     mFrameHandling.sendFrameInt(21, 4, charTab);
                 }
+                engineStatus.setText(R.string.engine_status_on);
             }
         });
         engineBtnOff.setOnClickListener(new View.OnClickListener() {
@@ -40,6 +43,7 @@ public class MovementActivity extends Activity {
                     int[] charTab = {0, 0, 0, 40};
                     mFrameHandling.sendFrameInt(21, 4, charTab);
                 }
+                engineStatus.setText(R.string.engine_status_off);
             }
         });
 
