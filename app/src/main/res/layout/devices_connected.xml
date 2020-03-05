@@ -57,7 +57,7 @@
             android:lineSpacingExtra="4dp"
             android:text="@string/rover_connected"
             android:textAlignment="center"
-            android:textColor="@color/colorAccent"
+            android:textColor="@color/green"
             android:textSize="20sp"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"
