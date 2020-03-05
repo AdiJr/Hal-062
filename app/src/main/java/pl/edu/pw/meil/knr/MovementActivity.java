@@ -24,6 +24,7 @@ public class MovementActivity extends Activity {
         Button engineBtnOn = findViewById(R.id.engineOnBtn);
         Button engineBtnOff = findViewById(R.id.engineOffBtn);
         final TextView engineStatus = findViewById(R.id.engineStatusTxt);
+
         engineStatus.setText(R.string.engine_status_info);
 
         engineBtnOn.setOnClickListener(new View.OnClickListener() {

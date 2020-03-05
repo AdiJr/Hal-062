@@ -6,12 +6,10 @@ import android.bluetooth.BluetoothAdapter;
 import android.bluetooth.BluetoothDevice;
 import android.content.BroadcastReceiver;
 import android.content.Context;
-import android.content.DialogInterface;
 import android.content.Intent;
 import android.content.IntentFilter;
 import android.os.Build;
 import android.os.Bundle;
-import android.util.Log;
 import android.view.View;
 import android.widget.AdapterView;
 import android.widget.Button;
@@ -24,96 +22,20 @@ import android.widget.Toast;
 import java.util.ArrayList;
 import java.util.LinkedHashSet;
 
-import androidx.appcompat.app.AlertDialog;
 import androidx.appcompat.app.AppCompatActivity;
+import timber.log.Timber;
 
 public class MainActivity extends AppCompatActivity implements AdapterView.OnItemClickListener {
-
-    private static final String TAG = "MainActivity";
     private TextView mConnectionState;
     private TextView mConnectTextView;
     private ImageButton mConnectBtn;
     private BluetoothAdapter mBluetoothAdapter;
-    private Button mMovementActivityButton;
-    private Button mDisconnectButton;
-    private ImageView mRoverImg;
     private BluetoothDevice mBTDevice;
     public ArrayList<BluetoothDevice> mBTDevices = new ArrayList<>();
     public DeviceListAdapter listAdapter;
     public HalAPP mHallAPP;
     private ListView mDevicesList;
     private ProgressDialog mLoader;
-    private AlertDialog.Builder newDevicesDialog;
-    private LinkedHashSet<BluetoothDevice> linkedHashSet = new LinkedHashSet<>();
-
-    // Receiver for listening to Bluetooth state changes
-    private final BroadcastReceiver mBluetoothStateReceiver = new BroadcastReceiver() {
-        public void onReceive(Context context, Intent intent) {
-            String action = intent.getAction();
-
-            assert action != null;
-            if (action.equals(BluetoothAdapter.ACTION_STATE_CHANGED)) {
-                final int state = intent.getIntExtra(BluetoothAdapter.EXTRA_STATE, BluetoothAdapter.ERROR);
-                switch (state) {
-                    case BluetoothAdapter.STATE_OFF:
-
-                        mMovementActivityButton.setVisibility(View.INVISIBLE);
-                        mConnectBtn.setVisibility(View.VISIBLE);
-                        mRoverImg.setVisibility(View.INVISIBLE);
-                        mConnectBtn.setImageResource(R.drawable.bluetooth);
-                        mConnectionState.setTextColor(getResources().getColor(R.color.colorAccent));
-                        mConnectTextView.setVisibility(View.INVISIBLE);
-                        mDisconnectButton.setVisibility(View.INVISIBLE);
-                        mConnectionState.setText(getString(R.string.rover_disconnected));
-                        mConnectTextView.setVisibility(View.VISIBLE);
-                        mConnectTextView.setText(getString(R.string.connect));
-                        mDevicesList.setVisibility(View.INVISIBLE);
-                        break;
-
-                    case BluetoothAdapter.STATE_TURNING_OFF:
-
-                    case BluetoothAdapter.STATE_TURNING_ON:
-                        break;
-
-                    case BluetoothAdapter.STATE_ON:
-                        startDiscovering();
-                        break;
-                }
-            }
-        }
-    };
-
-
-    // Broadcast Receiver for listing devices that are not yet paired
-    private BroadcastReceiver mDevicesFoundReceiver = new BroadcastReceiver() {
-        @Override
-        public void onReceive(Context context, Intent intent) {
-
-            final String action = intent.getAction();
-            mLoader.cancel();
-
-            Log.d(TAG, "onReceive: ACTION FOUND");
-            assert action != null;
-            if (action.equals(BluetoothDevice.ACTION_FOUND)) {
-                BluetoothDevice device = intent.getParcelableExtra(BluetoothDevice.EXTRA_DEVICE);
-                mBTDevices.add(device);
-
-                linkedHashSet.addAll(mBTDevices);
-                mBTDevices.clear();
-                mBTDevices.addAll(linkedHashSet);
-
-                if (device.getName().equals("Elon_Musk")) {
-                    mBluetoothAdapter.cancelDiscovery();
-                }
-                Log.d(TAG, "onReceive: " + device.getName() + ": " + device.getAddress());
-            }
-            listAdapter = new DeviceListAdapter(context, R.layout.devices_list, mBTDevices);
-            mDevicesList.setAdapter(listAdapter);
-
-            showDialog();
-        }
-    };
-
     private final BroadcastReceiver mBondDevicesReceiver = new BroadcastReceiver() {
         @Override
         public void onReceive(Context context, Intent intent) {
@@ -125,51 +47,74 @@ public class MainActivity extends AppCompatActivity implements AdapterView.OnIte
                 BluetoothDevice mDevice = intent.getParcelableExtra(BluetoothDevice.EXTRA_DEVICE);
 
                 if (mDevice.getBondState() == BluetoothDevice.BOND_BONDED) {
-                    Log.d(TAG, "BroadcastReceiver: BOND_BONDED.");
+                    Timber.d("BroadcastReceiver: BOND_BONDED.");
                     mBTDevice = mDevice;
-
-                    new AlertDialog.Builder(MainActivity.this).setMessage("Pairing successful! Start connection?")
-                            .setPositiveButton("Yes", new DialogInterface.OnClickListener() {
-                                @Override
-                                public void onClick(DialogInterface dialog, int which) {
-                                    if (mBTDevice != null) {
-
-                                        mHallAPP.setBluetoothDevice(mBTDevice);
-                                        mHallAPP.startBTConnectionService(MainActivity.this);
-                                        mHallAPP.startBTConnection();
-
-                                        mConnectionState.setText(getString(R.string.rover_connected));
-                                        mConnectionState.setTextColor(getResources().getColor(R.color.green));
-                                        mConnectionState.setTextSize(22);
-                                        mConnectTextView.setText(getString(R.string.disconnectBrn));
-                                        mMovementActivityButton.setVisibility(View.VISIBLE);
-                                        mConnectBtn.setVisibility(View.INVISIBLE);
-                                        mRoverImg.setVisibility(View.VISIBLE);
-                                        mDisconnectButton.setVisibility(View.VISIBLE);
-                                        mConnectTextView.setVisibility(View.INVISIBLE);
-
-                                    }
-                                }
-                            })
-                            .setNegativeButton("No", new DialogInterface.OnClickListener() {
-                                @Override
-                                public void onClick(DialogInterface dialog, int which) {
-                                    dialog.cancel();
-                                }
-                            }).show();
+                    mHallAPP.setBluetoothDevice(mBTDevice);
+                    mHallAPP.startBTConnectionService(MainActivity.this);
+                    mHallAPP.startBTConnection();
                 }
-                //case2: creating a bond
                 if (mDevice.getBondState() == BluetoothDevice.BOND_BONDING) {
-                    Log.d(TAG, "BroadcastReceiver: BOND_BONDING.");
+                    Timber.d("BroadcastReceiver: BOND_BONDING.");
                 }
-                //case3: breaking a bond
                 if (mDevice.getBondState() == BluetoothDevice.BOND_NONE) {
-                    Log.d(TAG, "BroadcastReceiver: BOND_NONE.");
+                    Timber.d("BroadcastReceiver: BOND_NONE.");
                 }
             }
         }
     };
+    private LinkedHashSet<BluetoothDevice> linkedHashSet = new LinkedHashSet<>();
+    private TextView mNewDevices;
+    // Broadcast Receiver for listing devices that are not yet paired
+    private BroadcastReceiver mDevicesFoundReceiver = new BroadcastReceiver() {
+        @Override
+        public void onReceive(Context context, Intent intent) {
 
+            final String action = intent.getAction();
+            mLoader.cancel();
+            listAdapter = new DeviceListAdapter(context, R.layout.list_item, mBTDevices);
+            mDevicesList.setAdapter(listAdapter);
+
+            Timber.d("onReceive: ACTION FOUND");
+            assert action != null;
+            if (action.equals(BluetoothDevice.ACTION_FOUND)) {
+                mConnectBtn.setVisibility(View.GONE);
+                mConnectTextView.setVisibility(View.GONE);
+                mConnectionState.setVisibility(View.GONE);
+                mNewDevices.setVisibility(View.VISIBLE);
+
+                BluetoothDevice device = intent.getParcelableExtra(BluetoothDevice.EXTRA_DEVICE);
+                mBTDevices.add(device);
+                linkedHashSet.addAll(mBTDevices);
+                mBTDevices.clear();
+                mBTDevices.addAll(linkedHashSet);
+                listAdapter.notifyDataSetChanged();
+                Timber.d("onReceive: " + device.getName() + ": " + device.getAddress());
+            }
+        }
+    };
+    // Receiver for listening to Bluetooth state changes
+    private final BroadcastReceiver mBluetoothStateReceiver = new BroadcastReceiver() {
+        public void onReceive(Context context, Intent intent) {
+            String action = intent.getAction();
+            assert action != null;
+            if (action.equals(BluetoothAdapter.ACTION_STATE_CHANGED)) {
+                final int state = intent.getIntExtra(BluetoothAdapter.EXTRA_STATE, BluetoothAdapter.ERROR);
+                switch (state) {
+                    case BluetoothAdapter.STATE_OFF:
+                        Timber.i("Bluetooth OFF");
+                        setContentView(R.layout.activity_main);
+                        break;
+                    case BluetoothAdapter.STATE_TURNING_OFF:
+                    case BluetoothAdapter.STATE_TURNING_ON:
+                        break;
+                    case BluetoothAdapter.STATE_ON:
+                        Timber.i("Bluetooth ON");
+                        startDiscovering();
+                        break;
+                }
+            }
+        }
+    };
 
     @Override
     protected void onDestroy() {
@@ -188,27 +133,16 @@ public class MainActivity extends AppCompatActivity implements AdapterView.OnIte
         mConnectBtn = findViewById(R.id.bluetooth_imageButton);
         mConnectionState = findViewById(R.id.connectionStateTextView);
         mConnectTextView = findViewById(R.id.clickToConnectTxt);
-        mMovementActivityButton = findViewById(R.id.moveBtn);
-        mRoverImg = findViewById(R.id.connected_image);
-        mDisconnectButton = findViewById(R.id.disconnectBtn);
+        Button mMovementActivityButton = findViewById(R.id.moveBtn);
+        ImageView mRoverImg = findViewById(R.id.connected_image);
+        Button mDisconnectButton = findViewById(R.id.disconnectBtn);
         mDevicesList = findViewById(R.id.lvNewDevices);
         mBTDevices = new ArrayList<>();
-        newDevicesDialog = new AlertDialog.Builder(this);
-
+        mNewDevices = findViewById(R.id.newDevicesTxt);
+        mNewDevices.setVisibility(View.GONE);
         mHallAPP = HalAPP.getInstance();
-
-        IntentFilter filter = new IntentFilter(BluetoothDevice.ACTION_BOND_STATE_CHANGED);
-        registerReceiver(mBondDevicesReceiver, filter);
-
         mDevicesList.setOnItemClickListener(MainActivity.this);
         mBluetoothAdapter = BluetoothAdapter.getDefaultAdapter();
-
-        mMovementActivityButton.setVisibility(View.INVISIBLE);
-        mRoverImg.setVisibility(View.INVISIBLE);
-        mDisconnectButton.setVisibility(View.INVISIBLE);
-
-        mConnectionState.setText(getString(R.string.rover_disconnected));
-        mConnectionState.setTextColor(getResources().getColor(R.color.colorAccent));
     }
 
     public void startConnection(View view) {
@@ -230,14 +164,13 @@ public class MainActivity extends AppCompatActivity implements AdapterView.OnIte
     }
 
     public void startDiscovering() {
-        mLoader = ProgressDialog.show(this, "Searching...", "Please wait while searching for " +
-                "Bluetooth devices", true);
+        mLoader = ProgressDialog.show(this, getString(R.string.loader_search), getString(R.string.loader_wait), true);
 
-        Log.d(TAG, "Looking for unpaired devices...");
+        Timber.d("Looking for unpaired devices...");
 
         if (mBluetoothAdapter.isDiscovering()) {
             mBluetoothAdapter.cancelDiscovery();
-            Log.d(TAG, "btnDiscover: Canceling discovery...");
+            Timber.d("btnDiscover: Canceling discovery...");
 
             checkBTPermissions();
             mBluetoothAdapter.startDiscovery();
@@ -273,56 +206,8 @@ public class MainActivity extends AppCompatActivity implements AdapterView.OnIte
     public void disconnect(View view) {
         mBluetoothAdapter.disable();
 
-        IntentFilter BTIntent = new IntentFilter(BluetoothAdapter.ACTION_STATE_CHANGED);
-        registerReceiver(mBluetoothStateReceiver, BTIntent);
-    }
-
-    public void showDialog() {
-        newDevicesDialog.setTitle("Available devices");
-        newDevicesDialog.setAdapter(listAdapter, new DialogInterface.OnClickListener() {
-            @Override
-            public void onClick(DialogInterface dialog, int which) {
-                mBluetoothAdapter.cancelDiscovery();
-
-                String deviceName = mBTDevices.get(which).getName();
-                Log.d(TAG, "onItemClick: deviceName = " + deviceName);
-                Log.d(TAG, "Trying to pair with " + deviceName);
-                mBTDevices.get(which).createBond();
-                mBTDevice = mBTDevices.get(which);
-
-                new AlertDialog.Builder(MainActivity.this).setMessage("Start connection?")
-                        .setPositiveButton("Yes", new DialogInterface.OnClickListener() {
-                            @Override
-                            public void onClick(DialogInterface dialog, int which) {
-                                if (mBTDevice != null) {
-
-                                    mHallAPP.setBluetoothDevice(mBTDevice);
-                                    mHallAPP.startBTConnectionService(MainActivity.this);
-                                    mHallAPP.startBTConnection();
-
-                                    mDevicesList.setVisibility(View.GONE);
-                                    mConnectionState.setText(getString(R.string.rover_connected));
-                                    mConnectionState.setTextColor(getResources().getColor(R.color.green));
-                                    mConnectionState.setTextSize(22);
-                                    mConnectTextView.setText(getString(R.string.btnDcs));
-                                    mMovementActivityButton.setVisibility(View.VISIBLE);
-                                    mConnectBtn.setVisibility(View.INVISIBLE);
-                                    mRoverImg.setVisibility(View.VISIBLE);
-                                    mDisconnectButton.setVisibility(View.VISIBLE);
-                                    mConnectTextView.setVisibility(View.INVISIBLE);
-
-                                } else Log.e(TAG, "Error BT Device is null");
-                            }
-                        })
-                        .setNegativeButton("No", new DialogInterface.OnClickListener() {
-                            @Override
-                            public void onClick(DialogInterface dialog, int which) {
-                                dialog.cancel();
-                            }
-                        }).show();
-            }
-        });
-        newDevicesDialog.show();
+        IntentFilter disableBtIntent = new IntentFilter(BluetoothAdapter.ACTION_STATE_CHANGED);
+        registerReceiver(mBluetoothStateReceiver, disableBtIntent);
     }
 
     @Override
@@ -330,43 +215,25 @@ public class MainActivity extends AppCompatActivity implements AdapterView.OnIte
         mBluetoothAdapter.cancelDiscovery();
 
         String deviceName = mBTDevices.get(i).getName();
-        Log.d(TAG, "onItemClick: deviceName = " + deviceName);
-        Log.d(TAG, "Trying to pair with " + deviceName);
+        Timber.d("onItemClick: deviceName = %s", deviceName);
+        Timber.d("Trying to pair with %s", deviceName);
         mBTDevices.get(i).createBond();
         mBTDevice = mBTDevices.get(i);
 
-        Log.d(TAG, "mBTDevice: " + mBTDevice);
+        Timber.d("mBTDevice: %s", mBTDevice);
 
-        new AlertDialog.Builder(MainActivity.this).setMessage("Start connection?")
-                .setPositiveButton("Yes", new DialogInterface.OnClickListener() {
-                    @Override
-                    public void onClick(DialogInterface dialog, int which) {
-                        if (mBTDevice != null) {
+        if (mBTDevice != null) {
+            mHallAPP.setBluetoothDevice(mBTDevice);
+            mHallAPP.startBTConnectionService(MainActivity.this);
+            mHallAPP.startBTConnection();
 
-                            mHallAPP.setBluetoothDevice(mBTDevice);
-                            mHallAPP.startBTConnection();
-                            mHallAPP.startBTConnectionService(MainActivity.this);
+            mConnectionState.setText(getString(R.string.rover_connected));
+            mConnectionState.setTextColor(getResources().getColor(R.color.green));
+            mConnectionState.setTextSize(22);
+            mConnectTextView.setText(getString(R.string.disconnectBrn));
+            setContentView(R.layout.devices_connected);
 
-                            mDevicesList.setVisibility(View.GONE);
-                            mConnectionState.setText(getString(R.string.rover_connected));
-                            mConnectionState.setTextColor(getResources().getColor(R.color.green));
-                            mConnectionState.setTextSize(22);
-                            mConnectTextView.setText(getString(R.string.disconnectBrn));
-                            mMovementActivityButton.setVisibility(View.VISIBLE);
-                            mConnectBtn.setVisibility(View.INVISIBLE);
-                            mRoverImg.setVisibility(View.VISIBLE);
-                            mDisconnectButton.setVisibility(View.VISIBLE);
-                            mConnectTextView.setVisibility(View.INVISIBLE);
-
-                        } else Log.e(TAG, "Error BT Device is null");
-                    }
-                })
-                .setNegativeButton("No", new DialogInterface.OnClickListener() {
-                    @Override
-                    public void onClick(DialogInterface dialog, int which) {
-                        dialog.cancel();
-                    }
-                }).show();
+        } else Timber.e("Error BT Device is null");
     }
 
     public void roverMovement(View view) {

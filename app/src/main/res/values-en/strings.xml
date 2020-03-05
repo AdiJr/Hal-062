@@ -14,4 +14,7 @@
     <string name="engine_status_on">ENGINE STATUS: ON</string>
     <string name="engine_status_off">ENGINE STATUS: OFF</string>
     <string name="engine_status_info">Click \'ENGINE ON\' to power on the engine and start controlling the Rover</string>
+    <string name="select_device">Select device</string>
+    <string name="loader_search">Searching...</string>
+    <string name="loader_wait">Please wait while searching for Bluetooth devices</string>
 </resources>
