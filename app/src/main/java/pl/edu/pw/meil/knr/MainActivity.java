@@ -36,10 +36,12 @@ public class MainActivity extends AppCompatActivity implements AdapterView.OnIte
     public HalAPP mHallAPP;
     private ListView mDevicesList;
     private ProgressDialog mLoader;
+    private LinkedHashSet<BluetoothDevice> linkedHashSet = new LinkedHashSet<>();
+    private TextView mNewDevices;
+
     private final BroadcastReceiver mBondDevicesReceiver = new BroadcastReceiver() {
         @Override
         public void onReceive(Context context, Intent intent) {
-
             final String action = intent.getAction();
             assert action != null;
 
@@ -62,13 +64,11 @@ public class MainActivity extends AppCompatActivity implements AdapterView.OnIte
             }
         }
     };
-    private LinkedHashSet<BluetoothDevice> linkedHashSet = new LinkedHashSet<>();
-    private TextView mNewDevices;
+
     // Broadcast Receiver for listing devices that are not yet paired
     private BroadcastReceiver mDevicesFoundReceiver = new BroadcastReceiver() {
         @Override
         public void onReceive(Context context, Intent intent) {
-
             final String action = intent.getAction();
             mLoader.cancel();
             listAdapter = new DeviceListAdapter(context, R.layout.list_item, mBTDevices);
@@ -78,7 +78,6 @@ public class MainActivity extends AppCompatActivity implements AdapterView.OnIte
             assert action != null;
             if (action.equals(BluetoothDevice.ACTION_FOUND)) {
                 mConnectBtn.setVisibility(View.GONE);
-                mConnectTextView.setVisibility(View.GONE);
                 mConnectionState.setVisibility(View.GONE);
                 mNewDevices.setVisibility(View.VISIBLE);
 
@@ -132,7 +131,6 @@ public class MainActivity extends AppCompatActivity implements AdapterView.OnIte
 
         mConnectBtn = findViewById(R.id.bluetooth_imageButton);
         mConnectionState = findViewById(R.id.connectionStateTextView);
-        mConnectTextView = findViewById(R.id.clickToConnectTxt);
         Button mMovementActivityButton = findViewById(R.id.moveBtn);
         ImageView mRoverImg = findViewById(R.id.connected_image);
         Button mDisconnectButton = findViewById(R.id.disconnectBtn);
@@ -227,12 +225,7 @@ public class MainActivity extends AppCompatActivity implements AdapterView.OnIte
             mHallAPP.startBTConnectionService(MainActivity.this);
             mHallAPP.startBTConnection();
 
-            mConnectionState.setText(getString(R.string.rover_connected));
-            mConnectionState.setTextColor(getResources().getColor(R.color.green));
-            mConnectionState.setTextSize(22);
-            mConnectTextView.setText(getString(R.string.disconnectBrn));
             setContentView(R.layout.devices_connected);
-
         } else Timber.e("Error BT Device is null");
     }
 
