@@ -1,7 +1,6 @@
 package pl.edu.pw.meil.knr;
 
 import android.Manifest;
-import android.app.ProgressDialog;
 import android.bluetooth.BluetoothAdapter;
 import android.bluetooth.BluetoothDevice;
 import android.content.BroadcastReceiver;
@@ -19,10 +18,14 @@ import android.widget.ListView;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import com.airbnb.lottie.LottieAnimationView;
+
 import java.util.ArrayList;
 import java.util.LinkedHashSet;
 
 import androidx.appcompat.app.AppCompatActivity;
+import pl.edu.pw.meil.knr.classes.DeviceListAdapter;
+import pl.edu.pw.meil.knr.classes.HalAPP;
 import timber.log.Timber;
 
 public class MainActivity extends AppCompatActivity implements AdapterView.OnItemClickListener {
@@ -30,51 +33,24 @@ public class MainActivity extends AppCompatActivity implements AdapterView.OnIte
     private TextView mConnectTextView;
     private ImageButton mConnectBtn;
     private BluetoothAdapter mBluetoothAdapter;
-    private BluetoothDevice mBTDevice;
     public ArrayList<BluetoothDevice> mBTDevices = new ArrayList<>();
     public DeviceListAdapter listAdapter;
     public HalAPP mHallAPP;
     private ListView mDevicesList;
-    private ProgressDialog mLoader;
     private LinkedHashSet<BluetoothDevice> linkedHashSet = new LinkedHashSet<>();
     private TextView mNewDevices;
-
-    private final BroadcastReceiver mBondDevicesReceiver = new BroadcastReceiver() {
-        @Override
-        public void onReceive(Context context, Intent intent) {
-            final String action = intent.getAction();
-            assert action != null;
-
-            if (action.equals(BluetoothDevice.ACTION_BOND_STATE_CHANGED)) {
-                BluetoothDevice mDevice = intent.getParcelableExtra(BluetoothDevice.EXTRA_DEVICE);
-
-                if (mDevice.getBondState() == BluetoothDevice.BOND_BONDED) {
-                    Timber.d("BroadcastReceiver: BOND_BONDED.");
-                    mBTDevice = mDevice;
-                    mHallAPP.setBluetoothDevice(mBTDevice);
-                    mHallAPP.startBTConnectionService(MainActivity.this);
-                    mHallAPP.startBTConnection();
-                }
-                if (mDevice.getBondState() == BluetoothDevice.BOND_BONDING) {
-                    Timber.d("BroadcastReceiver: BOND_BONDING.");
-                }
-                if (mDevice.getBondState() == BluetoothDevice.BOND_NONE) {
-                    Timber.d("BroadcastReceiver: BOND_NONE.");
-                }
-            }
-        }
-    };
+    private LottieAnimationView mBluetoothAnimation;
 
     // Broadcast Receiver for listing devices that are not yet paired
     private BroadcastReceiver mDevicesFoundReceiver = new BroadcastReceiver() {
         @Override
         public void onReceive(Context context, Intent intent) {
             final String action = intent.getAction();
-            mLoader.cancel();
+
+            mBluetoothAnimation.setVisibility(View.GONE);
             listAdapter = new DeviceListAdapter(context, R.layout.list_item, mBTDevices);
             mDevicesList.setAdapter(listAdapter);
 
-            Timber.d("onReceive: ACTION FOUND");
             assert action != null;
             if (action.equals(BluetoothDevice.ACTION_FOUND)) {
                 mConnectBtn.setVisibility(View.GONE);
@@ -82,15 +58,17 @@ public class MainActivity extends AppCompatActivity implements AdapterView.OnIte
                 mNewDevices.setVisibility(View.VISIBLE);
 
                 BluetoothDevice device = intent.getParcelableExtra(BluetoothDevice.EXTRA_DEVICE);
+                Timber.d("onReceive: " + device.getName() + ": " + device.getAddress());
+
                 mBTDevices.add(device);
                 linkedHashSet.addAll(mBTDevices);
                 mBTDevices.clear();
                 mBTDevices.addAll(linkedHashSet);
                 listAdapter.notifyDataSetChanged();
-                Timber.d("onReceive: " + device.getName() + ": " + device.getAddress());
             }
         }
     };
+
     // Receiver for listening to Bluetooth state changes
     private final BroadcastReceiver mBluetoothStateReceiver = new BroadcastReceiver() {
         public void onReceive(Context context, Intent intent) {
@@ -120,7 +98,6 @@ public class MainActivity extends AppCompatActivity implements AdapterView.OnIte
         super.onDestroy();
         unregisterReceiver(mBluetoothStateReceiver);
         unregisterReceiver(mDevicesFoundReceiver);
-        unregisterReceiver(mBondDevicesReceiver);
         mBluetoothAdapter.cancelDiscovery();
     }
 
@@ -129,6 +106,7 @@ public class MainActivity extends AppCompatActivity implements AdapterView.OnIte
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
 
+        mBluetoothAnimation = findViewById(R.id.bluetoothAnimation);
         mConnectBtn = findViewById(R.id.bluetooth_imageButton);
         mConnectionState = findViewById(R.id.connectionStateTextView);
         Button mMovementActivityButton = findViewById(R.id.moveBtn);
@@ -162,8 +140,8 @@ public class MainActivity extends AppCompatActivity implements AdapterView.OnIte
     }
 
     public void startDiscovering() {
-        mLoader = ProgressDialog.show(this, getString(R.string.loader_search), getString(R.string.loader_wait), true);
-
+        mConnectBtn.setVisibility(View.GONE);
+        mBluetoothAnimation.setVisibility(View.VISIBLE);
         Timber.d("Looking for unpaired devices...");
 
         if (mBluetoothAdapter.isDiscovering()) {
@@ -213,19 +191,28 @@ public class MainActivity extends AppCompatActivity implements AdapterView.OnIte
         mBluetoothAdapter.cancelDiscovery();
 
         String deviceName = mBTDevices.get(i).getName();
-        Timber.d("onItemClick: deviceName = %s", deviceName);
-        Timber.d("Trying to pair with %s", deviceName);
-        mBTDevices.get(i).createBond();
-        mBTDevice = mBTDevices.get(i);
-
+        BluetoothDevice mBTDevice = mBTDevices.get(i);
         Timber.d("mBTDevice: %s", mBTDevice);
 
         if (mBTDevice != null) {
-            mHallAPP.setBluetoothDevice(mBTDevice);
-            mHallAPP.startBTConnectionService(MainActivity.this);
-            mHallAPP.startBTConnection();
-
-            setContentView(R.layout.devices_connected);
+            if (mBTDevice.getBondState() == BluetoothDevice.BOND_NONE) {
+                Timber.i("Device not bonded");
+                mBTDevices.get(i).createBond();
+                if (mBTDevice.getBondState() == BluetoothDevice.BOND_BONDED) {
+                    Timber.i("Device bonded");
+                    mHallAPP.setBluetoothDevice(mBTDevice);
+                    mHallAPP.startBTConnectionService(MainActivity.this);
+                    mHallAPP.startBTConnection();
+                    setContentView(R.layout.devices_connected);
+                }
+            }
+            if (mBTDevice.getBondState() == BluetoothDevice.BOND_BONDED) {
+                Timber.i("Device bonded");
+                mHallAPP.setBluetoothDevice(mBTDevice);
+                mHallAPP.startBTConnectionService(MainActivity.this);
+                mHallAPP.startBTConnection();
+                setContentView(R.layout.devices_connected);
+            }
         } else Timber.e("Error BT Device is null");
     }
 

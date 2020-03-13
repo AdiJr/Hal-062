@@ -1,4 +1,4 @@
-package pl.edu.pw.meil.knr;
+package pl.edu.pw.meil.knr.classes;
 
 import android.bluetooth.BluetoothDevice;
 import android.content.Context;
@@ -10,13 +10,15 @@ import android.widget.TextView;
 
 import java.util.ArrayList;
 
+import pl.edu.pw.meil.knr.R;
+
 public class DeviceListAdapter extends ArrayAdapter<BluetoothDevice> {
 
     private LayoutInflater mLayoutInflater;
     private ArrayList<BluetoothDevice> mDevices;
     private int mViewResourceId;
 
-    DeviceListAdapter(Context context, int tvResourceId, ArrayList<BluetoothDevice> devices) {
+    public DeviceListAdapter(Context context, int tvResourceId, ArrayList<BluetoothDevice> devices) {
         super(context, tvResourceId, devices);
         this.mDevices = devices;
         mLayoutInflater = (LayoutInflater) context.getSystemService(Context.LAYOUT_INFLATER_SERVICE);
@@ -33,8 +35,6 @@ public class DeviceListAdapter extends ArrayAdapter<BluetoothDevice> {
             TextView deviceAddress = convertView.findViewById(R.id.tvDeviceAddress);
             if (deviceName != null) {
                 deviceName.setText(device.getName());
-            } else {
-                deviceName.setText(R.string.unknownName);
             }
             if (deviceAddress != null) {
                 deviceAddress.setText(device.getAddress());

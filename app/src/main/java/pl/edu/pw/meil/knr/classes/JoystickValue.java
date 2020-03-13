@@ -1,4 +1,4 @@
-package pl.edu.pw.meil.knr;
+package pl.edu.pw.meil.knr.classes;
 
 /**
  * Created by T460s on 09.03.2018.

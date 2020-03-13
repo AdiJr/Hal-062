@@ -1,4 +1,4 @@
-package pl.edu.pw.meil.knr;
+package pl.edu.pw.meil.knr.classes;
 
 import androidx.appcompat.app.AppCompatActivity;
 

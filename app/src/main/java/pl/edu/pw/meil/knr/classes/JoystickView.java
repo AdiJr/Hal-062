@@ -1,4 +1,4 @@
-package pl.edu.pw.meil.knr;
+package pl.edu.pw.meil.knr.classes;
 
 import android.content.Context;
 import android.content.res.TypedArray;
@@ -13,6 +13,8 @@ import android.util.AttributeSet;
 import android.view.MotionEvent;
 import android.view.View;
 import android.view.ViewConfiguration;
+
+import pl.edu.pw.meil.knr.R;
 
 public class JoystickView extends View
         implements

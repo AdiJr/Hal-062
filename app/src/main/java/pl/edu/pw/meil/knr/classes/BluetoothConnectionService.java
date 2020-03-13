@@ -1,4 +1,4 @@
-package pl.edu.pw.meil.knr;
+package pl.edu.pw.meil.knr.classes;
 
 import android.bluetooth.BluetoothAdapter;
 import android.bluetooth.BluetoothDevice;
@@ -24,7 +24,7 @@ public class BluetoothConnectionService {
     private UUID deviceUUID;
     private ConnectedThread mConnectedThread;
 
-    BluetoothConnectionService(Context context) {
+    public BluetoothConnectionService(Context context) {
         mBluetoothAdapter = BluetoothAdapter.getDefaultAdapter();
     }
 

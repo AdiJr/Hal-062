@@ -1,32 +1,57 @@
 package pl.edu.pw.meil.knr;
 
 import android.app.Activity;
+import android.net.ConnectivityManager;
+import android.net.NetworkInfo;
 import android.os.Bundle;
 import android.view.View;
+import android.webkit.WebView;
 import android.widget.Button;
+import android.widget.ImageView;
 import android.widget.TextView;
+import android.widget.Toast;
+
+import com.google.android.material.floatingactionbutton.FloatingActionButton;
 
 import java.util.Timer;
 import java.util.TimerTask;
 
+import pl.edu.pw.meil.knr.classes.DetectConnection;
+import pl.edu.pw.meil.knr.classes.FrameHandling;
+import pl.edu.pw.meil.knr.classes.HalAPP;
+import pl.edu.pw.meil.knr.classes.JoystickValue;
+import pl.edu.pw.meil.knr.classes.JoystickView;
+
 public class MovementActivity extends Activity {
 
     private FrameHandling mFrameHandling;
+    private ImageView knrImage;
+    private WebView mStream;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_movement);
 
+        ConnectivityManager connectivityManager = (ConnectivityManager) getSystemService(CONNECTIVITY_SERVICE);
+        NetworkInfo activeNetwork = connectivityManager.getActiveNetworkInfo();
         mFrameHandling = new FrameHandling();
+        mStream = findViewById(R.id.webView);
         final Timer t = new Timer();
         JoystickView joystick = findViewById(R.id.joystickView);
         Button engineBtnOn = findViewById(R.id.engineOnBtn);
         Button engineBtnOff = findViewById(R.id.engineOffBtn);
+        knrImage = findViewById(R.id.knr_logo);
         final TextView engineStatus = findViewById(R.id.engineStatusTxt);
+        FloatingActionButton streamFab = findViewById(R.id.streamFAB);
+
+        if (!DetectConnection.checkInternetConnection(this)) {
+            Toast.makeText(this, "You are not connected to LAN", Toast.LENGTH_SHORT).show();
+        } else {
+            streamFab.setVisibility(View.VISIBLE);
+        }
 
         engineStatus.setText(R.string.engine_status_info);
-
         engineBtnOn.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -37,6 +62,7 @@ public class MovementActivity extends Activity {
                 engineStatus.setText(R.string.engine_status_on);
             }
         });
+
         engineBtnOff.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
@@ -82,7 +108,11 @@ public class MovementActivity extends Activity {
                 JoystickValue.setY(y);
             }
         });
-
     }
 
+    public void showStream(View view) {
+        knrImage.setVisibility(View.GONE);
+        mStream.setVisibility(View.VISIBLE);
+        mStream.loadUrl("https://www.spidersweb.pl");
+    }
 }
