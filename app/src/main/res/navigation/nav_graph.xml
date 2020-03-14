@@ -9,6 +9,17 @@
         android:id="@+id/splashScreen"
         android:name="pl.edu.pw.meil.knr.fragments.SplashScreen"
         android:label="splash_screen_fragment"
-        tools:layout="@layout/splash_screen_fragment" />
+        tools:layout="@layout/splash_screen_fragment">
+        <action
+            android:id="@+id/action_splashScreen_to_connectScreen"
+            app:destination="@id/connectScreen"
+            app:enterAnim="@android:anim/fade_in"
+            app:exitAnim="@android:anim/slide_out_right" />
+    </fragment>
+    <fragment
+        android:id="@+id/connectScreen"
+        android:name="pl.edu.pw.meil.knr.fragments.ConnectScreen"
+        android:label="ConnectScreen"
+        tools:layout="@layout/connect_screen_fragment" />
 
 </navigation>

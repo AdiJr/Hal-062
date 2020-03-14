@@ -1,11 +1,13 @@
 package pl.edu.pw.meil.knr.fragments
 
 import android.os.Bundle
+import android.os.Handler
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import androidx.fragment.app.Fragment
 import androidx.lifecycle.ViewModelProviders
+import androidx.navigation.fragment.findNavController
 import pl.edu.pw.meil.knr.R
 import pl.edu.pw.meil.knr.viewModels.SplashScreenViewModel
 
@@ -27,6 +29,9 @@ class SplashScreen : Fragment() {
         super.onActivityCreated(savedInstanceState)
         viewModel = ViewModelProviders.of(this).get(SplashScreenViewModel::class.java)
         // TODO: Use the ViewModel
-    }
 
+        Handler().postDelayed({
+            findNavController().navigate(SplashScreenDirections.actionSplashScreenToConnectScreen())
+        }, 8000)
+    }
 }

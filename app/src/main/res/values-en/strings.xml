@@ -17,4 +17,8 @@
     <string name="select_device">Select device</string>
     <string name="loader_search">Searching...</string>
     <string name="loader_wait">Please wait while searching for Bluetooth devices</string>
+    <string name="connectInfo">Click the button below to search for available devices</string>
+    <string name="connectTV">Click on the proper device to connect with rover, For Crawler click on: \'XM-15\', for Hal click on: \'Elon_Musk\'</string>
+    <string name="connectInfoTV2">For Crawler click on: \'XM-15\', for Hal click on: \'Elon_Musk\'</string>
+    <string name="connectInfoTV">Click on the proper device to connect with rover</string>
 </resources>

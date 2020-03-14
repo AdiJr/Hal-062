@@ -3,90 +3,37 @@
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
-    android:layout_height="match_parent"
-    tools:context=".MainActivity">
-
-    <ImageView
-        android:id="@+id/knr_logo_image"
-        android:layout_width="0dp"
-        android:layout_height="109dp"
-        android:layout_marginStart="16dp"
-        android:layout_marginTop="24dp"
-        android:layout_marginEnd="16dp"
-        android:contentDescription="@string/knr_logo"
-        android:src="@drawable/knr_rover_logo"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/knr_rover_logo_image" />
-
-    <ImageView
-        android:id="@+id/knr_rover_logo_image"
-        android:layout_width="0dp"
-        android:layout_height="120dp"
-        android:layout_marginStart="16dp"
-        android:layout_marginTop="24dp"
-        android:layout_marginEnd="16dp"
-        android:adjustViewBounds="false"
-        android:contentDescription="@string/rover_team_logo"
-        android:src="@drawable/knr_logo"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="parent" />
-
-    <ImageButton
-        android:id="@+id/bluetooth_imageButton"
-        android:layout_width="281dp"
-        android:layout_height="273dp"
-        android:background="@android:color/white"
-        android:contentDescription="@string/connectBtnDsc"
-        android:onClick="startConnection"
-        android:src="@drawable/bluetooth"
-        app:layout_constraintBottom_toTopOf="@+id/connectionStateTextView"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/knr_logo_image" />
+    android:layout_height="match_parent">
 
     <com.airbnb.lottie.LottieAnimationView
-        android:visibility="gone"
         android:id="@+id/bluetoothAnimation"
-        android:layout_width="0dp"
-        android:scaleX="2"
-        android:scaleY="2"
-        android:layout_height="0dp"
-        app:layout_constraintBottom_toTopOf="@+id/connectionStateTextView"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="32dp"
+        android:scaleX="2.5"
+        android:scaleY="2.5"
+        app:layout_constraintBottom_toTopOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/knr_logo_image"
+        app:layout_constraintTop_toBottomOf="parent"
         app:lottie_autoPlay="true"
         app:lottie_fileName="bluetooth_search.json"
         app:lottie_loop="true" />
-
-    <TextView
-        android:id="@+id/newDevicesTxt"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:text="@string/select_device"
-        android:textSize="20sp"
-        android:visibility="gone"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/knr_logo_image" />
 
     <ListView
         android:id="@+id/lvNewDevices"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_marginStart="32dp"
-        android:layout_marginTop="16dp"
+        android:layout_marginTop="20dp"
         android:layout_marginEnd="32dp"
         android:divider="@android:color/darker_gray"
         android:dividerHeight="1dp"
         android:fadeScrollbars="true"
-        android:footerDividersEnabled="false"
-        android:headerDividersEnabled="false"
+        app:layout_constraintBottom_toTopOf="@id/robotAnimation"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/newDevicesTxt"
+        app:layout_constraintTop_toBottomOf="@+id/connectInfoTv2"
         tools:ignore="NestedScrolling" />
 
     <TextView
@@ -104,5 +51,48 @@
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent" />
+
+    <TextView
+        android:id="@+id/connectInfoTv"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="30dp"
+        android:lineSpacingExtra="4dp"
+        android:paddingStart="30dp"
+        android:paddingEnd="30dp"
+        android:text="@string/connectInfo"
+        android:textAlignment="center"
+        android:textSize="20sp"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent" />
+
+    <TextView
+        android:id="@+id/connectInfoTv2"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="5dp"
+        android:lineSpacingExtra="4dp"
+        android:paddingStart="30dp"
+        android:paddingEnd="30dp"
+        android:text="@string/connectInfoTV2"
+        android:textAlignment="center"
+        android:textSize="20sp"
+        android:visibility="gone"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@id/connectInfoTv" />
+
+    <com.airbnb.lottie.LottieAnimationView
+        android:id="@+id/robotAnimation"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:visibility="gone"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:lottie_autoPlay="true"
+        app:lottie_fileName="17061-galacticons-animated.json"
+        app:lottie_loop="true" />
 
 </androidx.constraintlayout.widget.ConstraintLayout>
