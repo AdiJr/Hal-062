@@ -12,10 +12,10 @@ import pl.edu.pw.meil.knr.R
 import pl.edu.pw.meil.knr.viewModels.SplashScreenViewModel
 
 
-class SplashScreen : Fragment() {
+class SplashScreenFragment : Fragment() {
 
     companion object {
-        fun newInstance() = SplashScreen()
+        fun newInstance() = SplashScreenFragment()
     }
 
     private lateinit var viewModel: SplashScreenViewModel

@@ -7,7 +7,7 @@
 
     <fragment
         android:id="@+id/splashScreen"
-        android:name="pl.edu.pw.meil.knr.fragments.SplashScreen"
+        android:name="pl.edu.pw.meil.knr.fragments.SplashScreenFragment"
         android:label="splash_screen_fragment"
         tools:layout="@layout/splash_screen_fragment">
         <action
@@ -18,7 +18,7 @@
     </fragment>
     <fragment
         android:id="@+id/connectScreen"
-        android:name="pl.edu.pw.meil.knr.fragments.ConnectScreen"
+        android:name="pl.edu.pw.meil.knr.fragments.ConnectScreenFragment"
         android:label="ConnectScreen"
         tools:layout="@layout/connect_screen_fragment" />
 

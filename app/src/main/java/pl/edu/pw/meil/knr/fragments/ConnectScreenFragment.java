@@ -35,7 +35,7 @@ import pl.edu.pw.meil.knr.classes.HalAPP;
 import pl.edu.pw.meil.knr.viewModels.ConnectScreenViewModel;
 import timber.log.Timber;
 
-public class ConnectScreen extends Fragment implements AdapterView.OnItemClickListener {
+public class ConnectScreenFragment extends Fragment implements AdapterView.OnItemClickListener {
 
     private ArrayList<BluetoothDevice> mBTDevices = new ArrayList<>();
     private HalAPP mHallAPP;
@@ -103,8 +103,8 @@ public class ConnectScreen extends Fragment implements AdapterView.OnItemClickLi
         }
     };
 
-    public static ConnectScreen newInstance() {
-        return new ConnectScreen();
+    public static ConnectScreenFragment newInstance() {
+        return new ConnectScreenFragment();
     }
 
     @Override

@@ -10,10 +10,10 @@ import pl.edu.pw.meil.knr.R
 import pl.edu.pw.meil.knr.viewModels.MovementScreenViewModel
 
 
-class MovementScreen : Fragment() {
+class MovementScreenFragment : Fragment() {
 
     companion object {
-        fun newInstance() = MovementScreen()
+        fun newInstance() = MovementScreenFragment()
     }
 
     private lateinit var viewModel: MovementScreenViewModel
