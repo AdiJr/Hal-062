@@ -31,7 +31,7 @@ class SplashScreenFragment : Fragment() {
         // TODO: Use the ViewModel
 
         Handler().postDelayed({
-            findNavController().navigate(SplashScreenDirections.actionSplashScreenToConnectScreen())
+            findNavController().navigate(SplashScreenFragmentDirections.actionSplashScreenToConnectScreen())
         }, 8000)
     }
 }
