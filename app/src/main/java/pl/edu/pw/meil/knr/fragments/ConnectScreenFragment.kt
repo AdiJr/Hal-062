@@ -12,10 +12,15 @@ import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
-import android.widget.*
+import android.widget.AdapterView
 import android.widget.AdapterView.OnItemClickListener
+import android.widget.ListView
+import android.widget.TextView
+import android.widget.Toast
+import androidx.activity.OnBackPressedCallback
 import androidx.fragment.app.Fragment
 import androidx.lifecycle.ViewModelProviders
+import androidx.navigation.fragment.findNavController
 import com.airbnb.lottie.LottieAnimationView
 import pl.edu.pw.meil.knr.R
 import pl.edu.pw.meil.knr.classes.DeviceListAdapter
@@ -34,10 +39,42 @@ class ConnectScreenFragment : Fragment(), OnItemClickListener {
     private var mNewDevices: TextView? = null
     private var mNewDevices2: TextView? = null
     private var mBluetoothAnimation: LottieAnimationView? = null
-    private var mRobotAnimation: LottieAnimationView? = null
     private var mViewModel: ConnectScreenViewModel? = null
-    private var mMovementControlButton: Button? = null
-    private var mDisconnectButton: Button? = null
+
+    override fun onCreateView(
+            inflater: LayoutInflater, container: ViewGroup?,
+            savedInstanceState: Bundle?
+    ): View? {
+        requireActivity().onBackPressedDispatcher.addCallback(this,
+                object : OnBackPressedCallback(true) {
+                    override fun handleOnBackPressed() {
+                        activity?.finish()
+                    }
+                })
+        return inflater.inflate(R.layout.connect_screen_fragment, container, false)
+    }
+
+    override fun onActivityCreated(savedInstanceState: Bundle?) {
+        super.onActivityCreated(savedInstanceState)
+
+        mBluetoothAnimation = view!!.findViewById(R.id.bluetoothAnimation)
+        mBluetoothAnimation!!.pauseAnimation()
+        mNewDevices = view!!.findViewById(R.id.connectInfoTv)
+        mNewDevices2 = view!!.findViewById(R.id.connectInfoTv2)
+        mConnectionState = view!!.findViewById(R.id.connectionStateTextView)
+        mDevicesList = view!!.findViewById(R.id.lvNewDevices)
+        mBTDevices = ArrayList()
+        mHallAPP = HalAPP.instance
+        mDevicesList!!.onItemClickListener = this
+        mBluetoothAdapter = BluetoothAdapter.getDefaultAdapter()
+
+        mViewModel = ViewModelProviders.of(activity!!).get(ConnectScreenViewModel::class.java)
+        // TODO: Use the ViewModel
+        mBluetoothAnimation!!.setOnClickListener {
+            startConnection()
+        }
+    }
+
 
     //Broadcast Receiver for listing devices that are not yet paired
     private val mDevicesFoundReceiver: BroadcastReceiver = object : BroadcastReceiver() {
@@ -45,7 +82,6 @@ class ConnectScreenFragment : Fragment(), OnItemClickListener {
             val action = intent.action
 
             mBluetoothAnimation!!.visibility = View.GONE
-            mRobotAnimation!!.visibility = View.VISIBLE
             mConnectionState!!.visibility = View.GONE
             mNewDevices2!!.visibility = View.VISIBLE
             mNewDevices!!.setText(R.string.connectInfoTV)
@@ -74,7 +110,7 @@ class ConnectScreenFragment : Fragment(), OnItemClickListener {
                 when (intent.getIntExtra(BluetoothAdapter.EXTRA_STATE, BluetoothAdapter.ERROR)) {
                     BluetoothAdapter.STATE_OFF -> {
                         Timber.i("Bluetooth OFF")
-                        activity!!.setContentView(R.layout.connect_screen_fragment)
+                        mBluetoothAnimation!!.pauseAnimation()
                     }
                     BluetoothAdapter.STATE_TURNING_OFF, BluetoothAdapter.STATE_TURNING_ON -> {
                     }
@@ -94,30 +130,6 @@ class ConnectScreenFragment : Fragment(), OnItemClickListener {
         mBluetoothAdapter!!.cancelDiscovery()
     }
 
-    override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?,
-                              savedInstanceState: Bundle?): View? {
-        return inflater.inflate(R.layout.connect_screen_fragment, container, false)
-    }
-
-    override fun onActivityCreated(savedInstanceState: Bundle?) {
-        super.onActivityCreated(savedInstanceState)
-        mBluetoothAnimation = view!!.findViewById(R.id.bluetoothAnimation)
-        mRobotAnimation = view!!.findViewById(R.id.robotAnimation)
-        mBluetoothAnimation!!.pauseAnimation()
-        mNewDevices = view!!.findViewById(R.id.connectInfoTv)
-        mNewDevices2 = view!!.findViewById(R.id.connectInfoTv2)
-        mConnectionState = view!!.findViewById(R.id.connectionStateTextView)
-        mDevicesList = view!!.findViewById(R.id.lvNewDevices)
-        mBTDevices = ArrayList()
-        mHallAPP = HalAPP.getInstance()
-        mDevicesList!!.onItemClickListener = this
-        mBluetoothAdapter = BluetoothAdapter.getDefaultAdapter()
-        mMovementControlButton = view!!.findViewById(R.id.moveBtn)
-        mDisconnectButton = view!!.findViewById(R.id.disconnectBtn)
-        mViewModel = ViewModelProviders.of(activity!!).get(ConnectScreenViewModel::class.java)
-        // TODO: Use the ViewModel
-        mBluetoothAnimation!!.setOnClickListener { startConnection() }
-    }
 
     private fun startConnection() {
         if (mBluetoothAdapter == null) {
@@ -188,18 +200,7 @@ class ConnectScreenFragment : Fragment(), OnItemClickListener {
             mHallAPP!!.setBluetoothDevice(mBTDevice)
             mHallAPP!!.startBTConnectionService(activity)
             mHallAPP!!.startBTConnection()
-            activity!!.setContentView(R.layout.devices_connected)
-
-            mMovementControlButton!!.setOnClickListener {
-                val intent = Intent(activity, MovementScreenFragment::class.java)
-                activity!!.startActivity(intent)
-            }
-
-            mDisconnectButton!!.setOnClickListener {
-                mBluetoothAdapter!!.disable()
-                val disableBtIntent = IntentFilter(BluetoothAdapter.ACTION_STATE_CHANGED)
-                activity!!.registerReceiver(mBluetoothStateReceiver, disableBtIntent)
-            }
+            findNavController().navigate(ConnectScreenFragmentDirections.actionConnectScreenToConnectedScreenFragment())
         }
     }
 

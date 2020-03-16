@@ -16,7 +16,6 @@
         android:textAlignment="center"
         android:textColor="@color/green"
         android:textSize="20sp"
-        android:textStyle="bold"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent" />
@@ -24,12 +23,14 @@
     <com.airbnb.lottie.LottieAnimationView
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
+        android:scaleX="3"
+        android:scaleY="3"
         app:layout_constraintBottom_toTopOf="@+id/controlButtons"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/connectionStateTextView"
         app:lottie_autoPlay="true"
-        app:lottie_fileName="1708-success.json"
+        app:lottie_fileName="782-check-mark-success.json"
         app:lottie_loop="true" />
 
     <LinearLayout

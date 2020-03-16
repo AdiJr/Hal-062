@@ -14,7 +14,7 @@
             android:id="@+id/action_splashScreen_to_connectScreen"
             app:destination="@id/connectScreen"
             app:enterAnim="@android:anim/fade_in"
-            app:exitAnim="@android:anim/slide_out_right" />
+            app:exitAnim="@android:anim/fade_out" />
     </fragment>
     <fragment
         android:id="@+id/connectScreen"
@@ -22,13 +22,37 @@
         android:label="ConnectScreen"
         tools:layout="@layout/connect_screen_fragment">
         <action
-            android:id="@+id/action_connectScreen_to_movementScreenFragment"
-            app:destination="@id/movementScreenFragment" />
+            android:id="@+id/action_connectScreen_to_connectedScreenFragment"
+            app:destination="@id/connectedScreenFragment"
+            app:enterAnim="@android:anim/fade_in"
+            app:exitAnim="@android:anim/fade_out" />
     </fragment>
     <fragment
         android:id="@+id/movementScreenFragment"
         android:name="pl.edu.pw.meil.knr.fragments.MovementScreenFragment"
         android:label="MovementScreenFragment"
-        tools:layout="@layout/movement_screen_fragment" />
+        tools:layout="@layout/movement_screen_fragment">
+        <action
+            android:id="@+id/action_movementScreenFragment_to_connectedScreenFragment"
+            app:destination="@id/connectedScreenFragment"
+            app:enterAnim="@android:anim/fade_in"
+            app:exitAnim="@android:anim/fade_out" />
+    </fragment>
+    <fragment
+        android:id="@+id/connectedScreenFragment"
+        android:name="pl.edu.pw.meil.knr.fragments.ConnectedScreenFragment"
+        android:label="ConnectedScreenFragment"
+        tools:layout="@layout/connected_screen_fragment">
+        <action
+            android:id="@+id/action_connectedScreenFragment_to_movementScreenFragment"
+            app:destination="@id/movementScreenFragment"
+            app:enterAnim="@android:anim/fade_in"
+            app:exitAnim="@android:anim/fade_out" />
+        <action
+            android:id="@+id/action_connectedScreenFragment_to_connectScreen"
+            app:destination="@id/connectScreen"
+            app:enterAnim="@android:anim/fade_in"
+            app:exitAnim="@android:anim/fade_out" />
+    </fragment>
 
 </navigation>

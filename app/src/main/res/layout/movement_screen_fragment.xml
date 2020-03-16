@@ -1,7 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
 <androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:custom="http://schemas.android.com/apk/res-auto"
-    xmlns:tools="http://schemas.android.com/tools"
     android:id="@+id/enginecontrol_activity"
     android:layout_width="fill_parent"
     android:layout_height="fill_parent"
@@ -14,23 +13,27 @@
         android:layout_marginStart="5dp"
         android:layout_marginTop="5dp"
         android:layout_marginEnd="5dp"
-        android:visibility="visible"
+        android:visibility="gone"
         custom:layout_constraintEnd_toEndOf="parent"
         custom:layout_constraintStart_toStartOf="parent"
         custom:layout_constraintTop_toTopOf="parent" />
 
-    <ImageView
-        android:id="@+id/knr_logo"
-        android:layout_width="match_parent"
-        android:layout_height="133dp"
-        android:layout_marginStart="16dp"
-        android:layout_marginTop="24dp"
-        android:layout_marginEnd="16dp"
-        android:src="@drawable/knr_rover_logo"
+    <com.airbnb.lottie.LottieAnimationView
+        android:id="@+id/noInternetAnimation"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="8dp"
+        android:layout_marginTop="8dp"
+        android:layout_marginEnd="8dp"
+        android:scaleX="2"
+        android:scaleY="2"
+        android:visibility="gone"
         custom:layout_constraintEnd_toEndOf="parent"
         custom:layout_constraintStart_toStartOf="parent"
         custom:layout_constraintTop_toTopOf="parent"
-        tools:ignore="ContentDescription" />
+        custom:lottie_autoPlay="true"
+        custom:lottie_fileName="3648-no-internet-connection.json"
+        custom:lottie_loop="true" />
 
     <pl.edu.pw.meil.knr.classes.JoystickView
         android:id="@+id/joystickView"
@@ -94,22 +97,4 @@
             android:textSize="15sp" />
 
     </LinearLayout>
-
-    <com.google.android.material.floatingactionbutton.FloatingActionButton
-        android:id="@+id/streamFAB"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_marginEnd="24dp"
-        android:layout_marginBottom="8dp"
-        android:backgroundTint="@color/colorAccent"
-        android:clickable="true"
-        android:focusable="true"
-        android:onClick="showStream"
-        android:visibility="gone"
-        custom:backgroundTint="@color/colorAccent"
-        custom:layout_constraintBottom_toTopOf="@+id/engineButtons"
-        custom:layout_constraintEnd_toEndOf="parent"
-        custom:rippleColor="@color/colorAccent"
-        custom:srcCompat="@drawable/mars_rover" />
-
 </androidx.constraintlayout.widget.ConstraintLayout>

@@ -32,6 +32,6 @@ class SplashScreenFragment : Fragment() {
 
         Handler().postDelayed({
             findNavController().navigate(SplashScreenFragmentDirections.actionSplashScreenToConnectScreen())
-        }, 8000)
+        }, 6000)
     }
 }

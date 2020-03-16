@@ -9,12 +9,10 @@ import android.view.View
 import android.view.ViewGroup
 import android.webkit.WebView
 import android.widget.Button
-import android.widget.ImageView
 import android.widget.TextView
-import android.widget.Toast
 import androidx.fragment.app.Fragment
 import androidx.lifecycle.ViewModelProviders
-import com.google.android.material.floatingactionbutton.FloatingActionButton
+import com.airbnb.lottie.LottieAnimationView
 import pl.edu.pw.meil.knr.R
 import pl.edu.pw.meil.knr.classes.*
 import pl.edu.pw.meil.knr.viewModels.MovementScreenViewModel
@@ -26,8 +24,6 @@ import kotlin.math.sin
 class MovementScreenFragment : Fragment() {
 
     private var mFrameHandling: FrameHandling? = null
-    private var knrImage: ImageView? = null
-    private var mStream: WebView? = null
 
     companion object {
         fun newInstance() = MovementScreenFragment()
@@ -43,26 +39,26 @@ class MovementScreenFragment : Fragment() {
     override fun onActivityCreated(savedInstanceState: Bundle?) {
         super.onActivityCreated(savedInstanceState)
 
-
         val connectivityManager = context!!.getSystemService(Context.CONNECTIVITY_SERVICE) as ConnectivityManager
         val activeNetwork: NetworkInfo? = connectivityManager.activeNetworkInfo
         mFrameHandling = FrameHandling()
-        mStream = activity!!.findViewById<View>(R.id.webView) as WebView?
+        val mStream = activity!!.findViewById<View>(R.id.webView) as WebView?
         val t = Timer()
         val joystick: JoystickView = activity!!.findViewById(R.id.joystickView)
         val engineBtnOn: Button = activity!!.findViewById<Button>(R.id.engineOnBtn)
         val engineBtnOff: Button = activity!!.findViewById<Button>(R.id.engineOffBtn)
-        knrImage = activity!!.findViewById<View>(R.id.knr_logo) as ImageView?
         val engineStatus: TextView = activity!!.findViewById<TextView>(R.id.engineStatusTxt)
-        val streamFab: FloatingActionButton = activity!!.findViewById(R.id.streamFAB)
+        val noInternetAnimation: LottieAnimationView = activity!!.findViewById(R.id.noInternetAnimation)
 
         viewModel = ViewModelProviders.of(this).get(MovementScreenViewModel::class.java)
         // TODO: Use the ViewModel
 
-        if (!DetectConnection.checkInternetConnection(activity)) {
-            Toast.makeText(activity, "You are not connected to LAN", Toast.LENGTH_SHORT).show()
+        if (!DetectConnection.checkInternetConnection(activity!!)) {
+            noInternetAnimation.visibility = View.VISIBLE
         } else {
-            streamFab.visibility = View.VISIBLE
+            noInternetAnimation.visibility = View.GONE
+            mStream!!.visibility = View.VISIBLE
+            mStream.loadUrl("https://www.spidersweb.pl")
         }
 
         engineStatus.setText(R.string.engine_status_info)
@@ -84,7 +80,7 @@ class MovementScreenFragment : Fragment() {
 
         t.scheduleAtFixedRate(object : TimerTask() {
             override fun run() {
-                if (HalAPP.getConnectionStatus() == 1) {
+                if (HalAPP.connectionStatus == 1) {
                     var right = -JoystickValue.joystickX - JoystickValue.joystickY
                     var left = -JoystickValue.joystickX + JoystickValue.joystickY
                     if (right > 100) {
