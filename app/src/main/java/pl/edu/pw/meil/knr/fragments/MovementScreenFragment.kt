@@ -27,6 +27,7 @@ import java.util.*
 import kotlin.math.cos
 import kotlin.math.sin
 
+/* Created by AdiJr in March 2020 for KNR PW */
 
 class MovementScreenFragment : Fragment() {
 

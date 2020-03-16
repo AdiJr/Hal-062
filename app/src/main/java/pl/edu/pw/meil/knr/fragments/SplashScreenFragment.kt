@@ -11,6 +11,7 @@ import androidx.navigation.fragment.findNavController
 import pl.edu.pw.meil.knr.R
 import pl.edu.pw.meil.knr.viewModels.SplashScreenViewModel
 
+/* Created by AdiJr in March 2020 for KNR PW */
 
 class SplashScreenFragment : Fragment() {
 

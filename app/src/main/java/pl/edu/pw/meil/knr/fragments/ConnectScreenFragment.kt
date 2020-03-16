@@ -29,6 +29,8 @@ import pl.edu.pw.meil.knr.viewModels.ConnectScreenViewModel
 import timber.log.Timber
 import java.util.*
 
+/* Created by AdiJr in March 2020 for KNR PW */
+
 class ConnectScreenFragment : Fragment(), OnItemClickListener {
     private var mBTDevices = ArrayList<BluetoothDevice>()
     private var mHallAPP: HalAPP? = null
@@ -76,7 +78,6 @@ class ConnectScreenFragment : Fragment(), OnItemClickListener {
             startConnection()
         }
     }
-
 
     //Broadcast Receiver for listing devices that are not yet paired
     private val mDevicesFoundReceiver: BroadcastReceiver = object : BroadcastReceiver() {
@@ -152,7 +153,6 @@ class ConnectScreenFragment : Fragment(), OnItemClickListener {
     }
 
     private fun startDiscovering() {
-
         Timber.d("Looking for unpaired devices...")
         mBluetoothAnimation!!.resumeAnimation()
 
@@ -197,6 +197,7 @@ class ConnectScreenFragment : Fragment(), OnItemClickListener {
         if (mBTDevice.bondState == BluetoothDevice.BOND_NONE) {
             Timber.i("Devices not bonded")
             mBTDevices[i].createBond()
+            Toast.makeText(activity, "Click again to start connection", Toast.LENGTH_LONG).show()
         }
 
         if (mBTDevice.bondState == BluetoothDevice.BOND_BONDED) {

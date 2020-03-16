@@ -17,6 +17,8 @@ import pl.edu.pw.meil.knr.R
 import pl.edu.pw.meil.knr.viewModels.ConnectedScreenViewModel
 import timber.log.Timber
 
+/* Created by AdiJr in March 2020 for KNR PW */
+
 class ConnectedScreenFragment : Fragment() {
 
     private var mMovementControlButton: Button? = null
