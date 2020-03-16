@@ -13,7 +13,7 @@
         android:layout_marginStart="5dp"
         android:layout_marginTop="5dp"
         android:layout_marginEnd="5dp"
-        android:visibility="gone"
+        android:visibility="visible"
         custom:layout_constraintEnd_toEndOf="parent"
         custom:layout_constraintStart_toStartOf="parent"
         custom:layout_constraintTop_toTopOf="parent" />
@@ -40,13 +40,13 @@
         android:layout_width="0dp"
         android:layout_height="wrap_content"
         android:layout_marginStart="16dp"
-        android:layout_marginTop="210dp"
         android:layout_marginEnd="16dp"
         android:background="@drawable/wind_rose"
         custom:JV_backgroundSizeRatio="90%"
         custom:JV_buttonImage="@drawable/gps"
         custom:JV_buttonSizeRatio="15%"
         custom:JV_fixedCenter="true"
+        custom:layout_constraintBottom_toBottomOf="parent"
         custom:layout_constraintEnd_toEndOf="parent"
         custom:layout_constraintStart_toStartOf="parent"
         custom:layout_constraintTop_toTopOf="parent" />

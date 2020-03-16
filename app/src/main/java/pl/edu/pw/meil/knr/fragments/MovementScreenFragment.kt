@@ -1,9 +1,14 @@
 package pl.edu.pw.meil.knr.fragments
 
+import android.app.AlertDialog
+import android.bluetooth.BluetoothAdapter
+import android.content.BroadcastReceiver
 import android.content.Context
+import android.content.Intent
 import android.net.ConnectivityManager
 import android.net.NetworkInfo
 import android.os.Bundle
+import android.os.Handler
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
@@ -12,10 +17,12 @@ import android.widget.Button
 import android.widget.TextView
 import androidx.fragment.app.Fragment
 import androidx.lifecycle.ViewModelProviders
+import androidx.navigation.fragment.findNavController
 import com.airbnb.lottie.LottieAnimationView
 import pl.edu.pw.meil.knr.R
 import pl.edu.pw.meil.knr.classes.*
 import pl.edu.pw.meil.knr.viewModels.MovementScreenViewModel
+import timber.log.Timber
 import java.util.*
 import kotlin.math.cos
 import kotlin.math.sin
@@ -106,6 +113,28 @@ class MovementScreenFragment : Fragment() {
             val y = (strength.toDouble() * cos(angle.toDouble() * 6.28 / 360.0)).toInt()
             JoystickValue.setX(x)
             JoystickValue.setY(y)
+        }
+    }
+
+    // Receiver for listening to Bluetooth state changes
+    private val mBluetoothStateReceiver: BroadcastReceiver = object : BroadcastReceiver() {
+        override fun onReceive(context: Context, intent: Intent) {
+            val action = intent.action!!
+            if (action == BluetoothAdapter.ACTION_STATE_CHANGED) {
+                when (intent.getIntExtra(BluetoothAdapter.EXTRA_STATE, BluetoothAdapter.ERROR)) {
+                    BluetoothAdapter.STATE_OFF -> {
+                        Timber.i("Bluetooth OFF")
+                        val builder = AlertDialog.Builder(activity)
+                        builder.setMessage("Connection Lost")
+                        builder.create().show()
+                        Handler().postDelayed({
+                            findNavController().navigate(MovementScreenFragmentDirections.actionMovementScreenFragmentToConnectScreen())
+                        }, 3000)
+                    }
+                    BluetoothAdapter.STATE_TURNING_OFF, BluetoothAdapter.STATE_TURNING_ON -> {
+                    }
+                }
+            }
         }
     }
 

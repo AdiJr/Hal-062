@@ -31,7 +31,7 @@
         android:fadeScrollbars="true"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/connectInfoTv2" />
+        app:layout_constraintTop_toBottomOf="@+id/connectInfoTv3" />
 
     <TextView
         android:id="@+id/connectionStateTextView"
@@ -79,5 +79,21 @@
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@id/connectInfoTv" />
+
+    <TextView
+        android:id="@+id/connectInfoTv3"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="5dp"
+        android:lineSpacingExtra="4dp"
+        android:paddingStart="30dp"
+        android:paddingEnd="30dp"
+        android:text="@string/connectInfoTV3"
+        android:textAlignment="center"
+        android:textSize="20sp"
+        android:visibility="gone"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@id/connectInfoTv2" />
 
 </androidx.constraintlayout.widget.ConstraintLayout>

@@ -38,6 +38,7 @@ class ConnectScreenFragment : Fragment(), OnItemClickListener {
     private val linkedHashSet = LinkedHashSet<BluetoothDevice>()
     private var mNewDevices: TextView? = null
     private var mNewDevices2: TextView? = null
+    private var mNewDevices3: TextView? = null
     private var mBluetoothAnimation: LottieAnimationView? = null
     private var mViewModel: ConnectScreenViewModel? = null
 
@@ -61,6 +62,7 @@ class ConnectScreenFragment : Fragment(), OnItemClickListener {
         mBluetoothAnimation!!.pauseAnimation()
         mNewDevices = view!!.findViewById(R.id.connectInfoTv)
         mNewDevices2 = view!!.findViewById(R.id.connectInfoTv2)
+        mNewDevices3 = view!!.findViewById(R.id.connectInfoTv3)
         mConnectionState = view!!.findViewById(R.id.connectionStateTextView)
         mDevicesList = view!!.findViewById(R.id.lvNewDevices)
         mBTDevices = ArrayList()
@@ -84,8 +86,10 @@ class ConnectScreenFragment : Fragment(), OnItemClickListener {
             mBluetoothAnimation!!.visibility = View.GONE
             mConnectionState!!.visibility = View.GONE
             mNewDevices2!!.visibility = View.VISIBLE
+            mNewDevices3!!.visibility = View.VISIBLE
             mNewDevices!!.setText(R.string.connectInfoTV)
             mNewDevices2!!.setText(R.string.connectInfoTV2)
+            mNewDevices3!!.setText(R.string.connectInfoTV3)
 
             val listAdapter = DeviceListAdapter(context, R.layout.list_item, mBTDevices)
             mDevicesList!!.adapter = listAdapter

@@ -1,7 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
     <string name="connectBtnDsc">Połącz</string>
-    <string name="btnDcs">Kliknij, aby połączyć</string>
     <string name="connState">Stan połączenia:</string>
     <string name="connect">Kliknij, aby połączyć</string>
     <string name="disconnectBrn">Rozłącz</string>
@@ -14,7 +13,8 @@
     <string name="engine_status_off">STATUS SILNIKA: WYŁĄCZONY</string>
     <string name="engine_status_on">STATUS SILNIKA: WŁĄCZONY</string>
     <string name="engine_status_info">Kliknij \"Włącz silnik\" żeby zacząć sterować łazikiem</string>
-    <string name="select_device">Wybierz urządzenie</string>
-    <string name="loader_search">Wyszukiwanie...</string>
-    <string name="loader_wait">Trwa wyszukiwanie dostępnych urządzeń</string>
+    <string name="connectInfo">Kliknij poniższy przycisk aby wyszukać dostępne urządzenia</string>
+    <string name="connectInfoTV">Wybierz właściwe urządzenie</string>
+    <string name="connectInfoTV2">Crawler - \"XM-15\"</string>
+    <string name="connectInfoTV3">Hal - \"Elon_Musk\"</string>
 </resources>

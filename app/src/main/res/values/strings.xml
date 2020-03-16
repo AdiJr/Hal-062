@@ -1,5 +1,5 @@
 <resources>
-    <string name="app_name" translatable="false">Hal-062</string>
+    <string name="app_name" translatable="false">Hal 062</string>
     <string name="connState">Connection State:</string>
     <string name="rover_disconnected">The Hal Rover is currently DISCONNECTED</string>
     <string name="rover_connected">The Hal Rover is currently CONNECTED</string>
@@ -12,8 +12,9 @@
     <string name="engine_status_on">ON</string>
     <string name="engine_status_off">OFF</string>
     <string name="engine_status_info">Click \'ENGINE ON\' to power on the engine and start controlling the Rover</string>
-    <string name="unknownName" translatable="false">Unknown</string>
     <string name="connectInfo">Click the button below to search for available devices</string>
-    <string name="connectInfoTV2">For Crawler click on: \'XM-15\', for Hal click on: \'Elon_Musk\'</string>
+    <string name="connectInfoTV2">For Crawler click on: \'XM-15\'</string>
     <string name="connectInfoTV">Click on the proper device to connect with rover</string>
+    <string name="connectBtnDsc">Connect</string>
+    <string name="connectInfoTV3">For Hal click on: \'Elon_Musk\'</string>
 </resources>
