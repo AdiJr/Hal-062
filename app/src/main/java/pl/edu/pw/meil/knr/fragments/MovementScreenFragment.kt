@@ -66,7 +66,7 @@ class MovementScreenFragment : Fragment() {
         } else {
             noInternetAnimation.visibility = View.GONE
             mStream!!.visibility = View.VISIBLE
-            mStream.loadUrl("https://www.spidersweb.pl")
+            mStream.loadUrl("http://192.168.1.138:8081")
         }
 
         engineStatus.setText(R.string.engine_status_info)
