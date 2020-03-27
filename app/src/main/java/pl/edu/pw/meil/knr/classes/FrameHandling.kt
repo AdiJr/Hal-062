@@ -1,10 +1,9 @@
 package pl.edu.pw.meil.knr.classes
 
-import androidx.appcompat.app.AppCompatActivity
 import java.util.*
 import kotlin.experimental.and
 
-class FrameHandling : AppCompatActivity() {
+class FrameHandling {
     private val halAPP = HalAPP.instance
 
     fun sendFrameInt(tag: Int, length: Int, output: IntArray) {

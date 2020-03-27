@@ -1,20 +1,19 @@
 package pl.edu.pw.meil.knr.classes
 
-import android.app.Application
 import android.bluetooth.BluetoothDevice
 import android.content.Context
 import java.util.*
 
-class HalAPP private constructor() : Application() {
+class HalAPP private constructor() {
     var bluetoothConnection: BluetoothConnectionService? = null
         private set
     private var mBluetoothDevice: BluetoothDevice? = null
 
-    fun startBTConnectionService(context: Context?) {
+    fun startBTConnectionService(context: Context) {
         bluetoothConnection = BluetoothConnectionService(context)
     }
 
-    fun setBluetoothDevice(mBluetoothDevice: BluetoothDevice?) {
+    fun setBluetoothDevice(mBluetoothDevice: BluetoothDevice) {
         this.mBluetoothDevice = mBluetoothDevice
     }
 
