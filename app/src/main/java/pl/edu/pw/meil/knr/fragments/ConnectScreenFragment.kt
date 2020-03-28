@@ -83,7 +83,7 @@ class ConnectScreenFragment : Fragment(), OnItemClickListener {
         mBluetoothAdapter = BluetoothAdapter.getDefaultAdapter()
 
         createNotificationChannel(context!!)
-        createNotification(context!!, getString(R.string.rover_disconnected), "Please turn on Bluetooth", null)
+        createNotification(context!!, getString(R.string.rover_disconnected), getString(R.string.notification_bt_off), null)
 
         mViewModel = ViewModelProviders.of(activity!!).get(ConnectScreenViewModel::class.java)
         // TODO: Use the ViewModel
@@ -116,7 +116,7 @@ class ConnectScreenFragment : Fragment(), OnItemClickListener {
                 mBTDevices.clear()
                 mBTDevices.addAll(linkedHashSet)
                 listAdapter.notifyDataSetChanged()
-                createNotification(context, "Devices Found", "Number of available devices: ${mBTDevices.size}", null)
+                createNotification(context, getString(R.string.notifiication_dv_found), getString(R.string.notification_dv_number) + "${mBTDevices.size}", null)
             }
         }
     }
@@ -129,7 +129,7 @@ class ConnectScreenFragment : Fragment(), OnItemClickListener {
                 when (intent.getIntExtra(BluetoothAdapter.EXTRA_STATE, BluetoothAdapter.ERROR)) {
                     BluetoothAdapter.STATE_OFF -> {
                         Timber.i("Bluetooth OFF")
-                        createNotification(context, getString(R.string.rover_disconnected), "Please turn on Bluetooth", null)
+                        createNotification(context, getString(R.string.rover_disconnected), getString(R.string.notification_bt_off), null)
                         showAlertDialog()
                     }
                     BluetoothAdapter.STATE_TURNING_OFF, BluetoothAdapter.STATE_TURNING_ON -> {
@@ -147,7 +147,7 @@ class ConnectScreenFragment : Fragment(), OnItemClickListener {
         activity!!.let {
             val builder = AlertDialog.Builder(it)
             builder.apply {
-                setMessage("Bluetooth is OFF, please turn it on and connect again")
+                setMessage(getString(R.string.alert_bt_off))
                 setPositiveButton("OK") { dialog, _ ->
                     dialog.cancel()
                 }
@@ -200,7 +200,7 @@ class ConnectScreenFragment : Fragment(), OnItemClickListener {
             Timber.d("btnDiscover: Canceling discovery...")
             checkBTPermissions()
             mBluetoothAdapter!!.startDiscovery()
-            createNotification(activity!!, getString(R.string.rover_disconnected), "Bluetooth ON, discovering in progress...", BitmapFactory.decodeResource(activity!!.resources, R.drawable.bluetooth_search))
+            createNotification(activity!!, getString(R.string.rover_disconnected), getString(R.string.notification_bt_on), BitmapFactory.decodeResource(activity!!.resources, R.drawable.bluetooth_search))
             mBluetoothAnimation!!.resumeAnimation()
             val discoverDevicesIntent = IntentFilter(BluetoothDevice.ACTION_FOUND)
             activity!!.registerReceiver(mDevicesFoundReceiver, discoverDevicesIntent)
@@ -208,7 +208,7 @@ class ConnectScreenFragment : Fragment(), OnItemClickListener {
         if (!mBluetoothAdapter!!.isDiscovering) {
             checkBTPermissions()
             mBluetoothAdapter!!.startDiscovery()
-            createNotification(activity!!, getString(R.string.rover_disconnected), "Bluetooth ON, discovering in progress...", BitmapFactory.decodeResource(activity!!.resources, R.drawable.bluetooth_search))
+            createNotification(activity!!, getString(R.string.rover_disconnected), getString(R.string.notification_bt_on), BitmapFactory.decodeResource(activity!!.resources, R.drawable.bluetooth_search))
             mBluetoothAnimation!!.resumeAnimation()
             val discoverDevicesIntent = IntentFilter(BluetoothDevice.ACTION_FOUND)
             activity!!.registerReceiver(mDevicesFoundReceiver, discoverDevicesIntent)
@@ -219,21 +219,7 @@ class ConnectScreenFragment : Fragment(), OnItemClickListener {
     private fun checkBTPermissions() {
         if (activity!!.checkSelfPermission(Manifest.permission.ACCESS_FINE_LOCATION) != PackageManager.PERMISSION_GRANTED
                 && activity!!.checkSelfPermission(Manifest.permission.ACCESS_COARSE_LOCATION) != PackageManager.PERMISSION_GRANTED) {
-            if (activity!!.shouldShowRequestPermissionRationale(Manifest.permission.ACCESS_FINE_LOCATION)) {
-                activity?.let {
-                    val builder = AlertDialog.Builder(it)
-                    builder.apply {
-                        setTitle("Permissions needed")
-                        setMessage("Location permissions needed to scan area to detect available Bluetooth devices")
-                        setPositiveButton("OK") { dialog, _ ->
-                            dialog.cancel()
-                        }
-                    }
-                    builder.create().show()
-                }
-            } else {
-                activity!!.requestPermissions(arrayOf(Manifest.permission.ACCESS_FINE_LOCATION, Manifest.permission.ACCESS_COARSE_LOCATION), 1)
-            }
+            activity!!.requestPermissions(arrayOf(Manifest.permission.ACCESS_FINE_LOCATION, Manifest.permission.ACCESS_COARSE_LOCATION), 1)
         }
     }
 
@@ -246,7 +232,7 @@ class ConnectScreenFragment : Fragment(), OnItemClickListener {
         if (mBTDevice.bondState == BluetoothDevice.BOND_NONE) {
             Timber.i("Devices not bonded")
             mBTDevices[i].createBond()
-            Toast.makeText(activity, "Click again to start connection", Toast.LENGTH_LONG).show()
+            Toast.makeText(activity, getString(R.string.toast_clickAgain), Toast.LENGTH_LONG).show()
         }
 
         if (mBTDevice.bondState == BluetoothDevice.BOND_BONDED) {

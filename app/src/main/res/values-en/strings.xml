@@ -17,4 +17,13 @@
     <string name="connectInfoTV2">For Crawler click on: \"XM-15\"</string>
     <string name="connectInfoTV">Click on the proper device to connect with rover</string>
     <string name="connectInfoTV3">For Hal click on: \"Elon_Musk\"</string>
+    <string name="notification_bt_off">Please turn on Bluetooth</string>
+    <string name="notifiication_dv_found">Devices Found</string>
+    <string name="alert_bt_off">Bluetooth is OFF, please turn it on and connect again</string>
+    <string name="notification_bt_on">Bluetooth ON, discovering in progress...</string>
+    <string name="toast_clickAgain">Click again to start connection</string>
+    <string name="notification_connected">Rover connected</string>
+    <string name="notification_connected_message">You can begin steering the Rover</string>
+    <string name="alert_homepage">HomePage</string>
+    <string name="notification_dv_number">"Number of available devices: "</string>
 </resources>

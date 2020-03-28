@@ -34,7 +34,7 @@ class ConnectedScreenFragment : Fragment() {
     override fun onActivityCreated(savedInstanceState: Bundle?) {
         super.onActivityCreated(savedInstanceState)
 
-        Notification.createNotification(context!!, "Rover Connected", "You can begin steering the Rover", BitmapFactory.decodeResource(context!!.resources, R.drawable.bluetooth_on))
+        Notification.createNotification(context!!, getString(R.string.notification_connected), getString(R.string.notification_connected_message), BitmapFactory.decodeResource(context!!.resources, R.drawable.bluetooth_on))
         mMovementControlButton = view!!.findViewById(R.id.moveBtn)
         mDisconnectButton = view!!.findViewById(R.id.disconnectBtn)
         mBluetoothAdapter = BluetoothAdapter.getDefaultAdapter()
@@ -55,8 +55,8 @@ class ConnectedScreenFragment : Fragment() {
         activity!!.let {
             val builder = AlertDialog.Builder(it)
             builder.apply {
-                setMessage("Bluetooth is OFF, please turn it on and connect again")
-                setPositiveButton("HomePage") { _, _ ->
+                setMessage(getString(R.string.alert_bt_off))
+                setPositiveButton(getString(R.string.alert_homepage)) { _, _ ->
                     findNavController().navigate(ConnectedScreenFragmentDirections.actionConnectedScreenFragmentToConnectScreen())
                 }
             }

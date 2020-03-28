@@ -10,11 +10,19 @@
     <string name="rover_disconnected">Łazik jest aktualnie ROZŁĄCZONY</string>
     <string name="engine_off">WYŁĄCZ SILNIK</string>
     <string name="engine_on">WŁĄCZ SILNIK</string>
-    <string name="engine_status_off">STATUS SILNIKA: WYŁĄCZONY</string>
-    <string name="engine_status_on">STATUS SILNIKA: WŁĄCZONY</string>
+    <string name="engine_status_off">SILNIK WYŁĄCZONY</string>
+    <string name="engine_status_on">SILNIK WŁĄCZONY</string>
     <string name="engine_status_info">Kliknij \"Włącz silnik\" żeby zacząć sterować łazikiem</string>
     <string name="connectInfo">Kliknij poniższy przycisk aby wyszukać dostępne urządzenia</string>
     <string name="connectInfoTV">Wybierz właściwe urządzenie</string>
     <string name="connectInfoTV2">Crawler - \"XM-15\"</string>
-    <string name="connectInfoTV3">Hal - \"Elon_Musk\"</string>
+    <string name="connectInfoTV3">Hal-062 - \"Elon_Musk\"</string>
+    <string name="notification_bt_off">Włącz Bluetooth</string>
+    <string name="notifiication_dv_found">Znaleziono urządzenia</string>
+    <string name="notification_dv_number">Liczba dostępnych urządzeń</string>
+    <string name="alert_bt_off">Bluetooth wyłączony, włącz go ponownie i spróbuj jeszcze raz</string>
+    <string name="notification_bt_on">Bluetooth włączony, wyszukiwanie w toku...</string>
+    <string name="toast_clickAgain">Kliknij na urządzenie ponownie w celu połączenia</string>
+    <string name="notification_connected">Łazik połączony</string>
+    <string name="notification_connected_message">Możesz zacząc sterować łazikiem</string>
 </resources>
