@@ -1,6 +1,5 @@
 package pl.edu.pw.meil.knr.fragments
 
-import android.app.AlertDialog
 import android.app.NotificationManager
 import android.bluetooth.BluetoothAdapter
 import android.graphics.BitmapFactory
@@ -11,21 +10,13 @@ import android.view.View
 import android.view.ViewGroup
 import android.widget.Button
 import androidx.fragment.app.Fragment
-import androidx.lifecycle.ViewModelProviders
 import androidx.navigation.fragment.findNavController
 import pl.edu.pw.meil.knr.R
 import pl.edu.pw.meil.knr.classes.Notification
-import pl.edu.pw.meil.knr.viewModels.ConnectedScreenViewModel
 
 /* Created by AdiJr in March 2020 for KNR PW */
 
 class ConnectedScreenFragment : Fragment() {
-
-    private var mMovementControlButton: Button? = null
-    private var mDisconnectButton: Button? = null
-    private var mBluetoothAdapter: BluetoothAdapter? = null
-    private lateinit var viewModel: ConnectedScreenViewModel
-
     override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?,
                               savedInstanceState: Bundle?): View? {
         return inflater.inflate(R.layout.connected_screen_fragment, container, false)
@@ -35,33 +26,28 @@ class ConnectedScreenFragment : Fragment() {
         super.onActivityCreated(savedInstanceState)
 
         Notification.createNotification(context!!, getString(R.string.notification_connected), getString(R.string.notification_connected_message), BitmapFactory.decodeResource(context!!.resources, R.drawable.bluetooth_on))
-        mMovementControlButton = view!!.findViewById(R.id.moveBtn)
-        mDisconnectButton = view!!.findViewById(R.id.disconnectBtn)
-        mBluetoothAdapter = BluetoothAdapter.getDefaultAdapter()
-        viewModel = ViewModelProviders.of(this).get(ConnectedScreenViewModel::class.java)
-        // TODO: Use the ViewModel
+        val mMovementControlButton = view!!.findViewById<Button>(R.id.moveBtn)
+        val mDisconnectButton = view!!.findViewById<Button>(R.id.disconnectBtn)
+        val mBluetoothAdapter = BluetoothAdapter.getDefaultAdapter()
 
-        mMovementControlButton!!.setOnClickListener {
+        mMovementControlButton.setOnClickListener {
             findNavController().navigate(ConnectedScreenFragmentDirections.actionConnectedScreenFragmentToMovementScreenFragment())
         }
 
-        mDisconnectButton!!.setOnClickListener {
-            mBluetoothAdapter!!.disable()
-            showNoBTAlertDialog()
+        mDisconnectButton.setOnClickListener {
+            mBluetoothAdapter.disable()
         }
     }
 
-    private fun showNoBTAlertDialog() {
-        activity!!.let {
-            val builder = AlertDialog.Builder(it)
-            builder.apply {
-                setMessage(getString(R.string.alert_bt_off))
-                setPositiveButton(getString(R.string.alert_homepage)) { _, _ ->
-                    findNavController().navigate(ConnectedScreenFragmentDirections.actionConnectedScreenFragmentToConnectScreen())
-                }
-            }
-            builder.create().show()
-        }
+    var isConnectedScreenFragment = false
+    override fun onStart() {
+        super.onStart()
+        isConnectedScreenFragment = true
+    }
+
+    override fun onStop() {
+        super.onStop()
+        isConnectedScreenFragment = false
     }
 
     override fun onDestroy() {

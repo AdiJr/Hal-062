@@ -19,16 +19,17 @@
         app:lottie_fileName="bluetooth_search.json"
         app:lottie_loop="true" />
 
-    <ListView
-        android:id="@+id/lvNewDevices"
+    <androidx.recyclerview.widget.RecyclerView
+        android:id="@+id/rvNewDevices"
+        android:layout_marginStart="50dp"
         android:layout_width="match_parent"
         android:layout_height="0dp"
-        android:layout_marginStart="32dp"
+        android:layout_marginEnd="50dp"
         android:layout_marginTop="32dp"
-        android:layout_marginEnd="32dp"
-        android:divider="@android:color/darker_gray"
-        android:dividerHeight="1dp"
-        android:fadeScrollbars="true"
+        android:layout_marginBottom="32dp"
+        android:visibility="gone"
+        app:layoutManager="androidx.recyclerview.widget.LinearLayoutManager"
+        app:layout_constraintBottom_toTopOf="@+id/connectionStateTextView"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/connectInfoTv3" />
